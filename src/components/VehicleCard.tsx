@@ -1,10 +1,12 @@
 import { useRef, type MouseEvent } from "react";
 import { motion } from "framer-motion";
+import { useNavigate } from "@tanstack/react-router";
 import type { Vehicle } from "@/lib/vehicles";
 import { useLang } from "@/lib/language";
 
 export function VehicleCard({ v }: { v: Vehicle }) {
   const { tr } = useLang();
+  const navigate = useNavigate();
   const ref = useRef<HTMLDivElement>(null);
 
   const onMove = (e: MouseEvent) => {
@@ -31,7 +33,16 @@ export function VehicleCard({ v }: { v: Vehicle }) {
         ref={ref}
         onMouseMove={onMove}
         onMouseLeave={onLeave}
-        className="tilt-card group relative overflow-hidden rounded-3xl glass-strong shadow-[var(--shadow-card)]"
+        onClick={() => navigate({ to: "/vehicles/$vehicleId", params: { vehicleId: v.id } })}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            navigate({ to: "/vehicles/$vehicleId", params: { vehicleId: v.id } });
+          }
+        }}
+        role="link"
+        tabIndex={0}
+        className="tilt-card group relative cursor-pointer overflow-hidden rounded-3xl glass-strong shadow-[var(--shadow-card)] focus:outline-none focus:ring-2 focus:ring-primary"
       >
         <div className="relative aspect-[4/3] overflow-hidden">
           <img
@@ -83,7 +94,8 @@ export function VehicleCard({ v }: { v: Vehicle }) {
               </div>
             </div>
             <a
-              href="#book"
+              href={`/?vehicle=${v.id}#book`}
+              onClick={(e) => e.stopPropagation()}
               className="btn-hero btn-hero-hover rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-wider"
             >
               {tr("ctaBook")}

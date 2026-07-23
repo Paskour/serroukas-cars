@@ -11,7 +11,28 @@ export interface Vehicle {
   price: number;
   type: VehicleType;
   image: string;
+  images?: string[];
   badge?: string;
+  horsepower?: number;
+  transmission?: string;
+  drive?: string;
+  doors?: number;
+  seats?: number;
+  exteriorColor?: string;
+  interiorColor?: string;
+  emissions?: string;
+  combinedConsumption?: string;
+  grossWeight?: string;
+  euroClass?: string;
+  upholstery?: string;
+  roadTax?: string;
+  wheelSize?: string;
+  cityConsumption?: string;
+  highwayConsumption?: string;
+  payload?: string;
+  registration?: string;
+  vin?: string;
+  axles?: number;
 }
 
 // Real photos from serroukas-cars.gr

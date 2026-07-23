@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, ChevronRight, ChevronLeft } from "lucide-react";
 import { useLang } from "@/lib/language";
+import { vehicles } from "@/lib/vehicles";
 
 interface FormData {
   firstName: string;
@@ -26,6 +27,19 @@ export function AppointmentForm() {
   const [step, setStep] = useState(0);
   const [data, setData] = useState<FormData>(initial);
   const [done, setDone] = useState(false);
+  const [selectedVehicle, setSelectedVehicle] = useState<string | null>(null);
+
+  useEffect(() => {
+    const vehicleId = new URLSearchParams(window.location.search).get("vehicle");
+    const vehicle = vehicles.find((item) => item.id === vehicleId);
+    if (!vehicle) return;
+    const name = `${vehicle.brand} ${vehicle.model}`;
+    setSelectedVehicle(name);
+    setData((current) => ({
+      ...current,
+      notes: current.notes || `Ενδιαφέρομαι για το ${name}.`,
+    }));
+  }, []);
 
   const steps = [tr("step1"), tr("step2"), tr("step3")];
 
@@ -59,6 +73,9 @@ export function AppointmentForm() {
           </div>
           <h2 className="mt-3 font-display text-5xl sm:text-6xl">{tr("bookTitle")}</h2>
           <p className="mt-4 text-muted-foreground">{tr("bookSub")}</p>
+          {selectedVehicle && (
+            <p className="mt-3 text-sm font-semibold text-primary">Ραντεβού για: {selectedVehicle}</p>
+          )}
         </motion.div>
 
         <div className="glass-strong rounded-3xl p-6 sm:p-10">
