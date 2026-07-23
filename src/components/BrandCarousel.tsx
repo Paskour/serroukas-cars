@@ -21,7 +21,9 @@ export function BrandCarousel() {
                 src={b.logo}
                 alt={b.name}
                 loading="lazy"
-                className="max-h-full max-w-full object-contain brightness-0 invert opacity-70 group-hover:opacity-100 transition"
+                className={`max-h-full max-w-full object-contain opacity-80 transition group-hover:opacity-100 ${
+                  b.name === "Nissan" ? "brightness-0 invert" : ""
+                }`}
               />
             </div>
             <span className="font-display text-xl sm:text-2xl text-muted-foreground/70 group-hover:text-foreground transition-colors tracking-widest">
