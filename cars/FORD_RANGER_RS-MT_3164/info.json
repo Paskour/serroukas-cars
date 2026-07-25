@@ -1,0 +1,85 @@
+{
+  "id": 3164,
+  "uid": "3164",
+  "title": "FORD RANGER RS-MT",
+  "slug": "ford",
+  "url": "https://www.serroukas-cars.gr/car-repository/ford/",
+  "price": "35,900€",
+  "specs": {
+    "code": "3164",
+    "kilometers": "101,000Km",
+    "engine_cc": "1,998cc",
+    "year": "2,022",
+    "hp": "113 hp",
+    "fuel": "Πετρέλαιο",
+    "transmission": "Αυτόματο",
+    "drive": "Πισωκίνητο",
+    "doors": "5",
+    "seats": "5",
+    "emissions": "Euro 6d Euroclass",
+    "interior_type": "Δέρμα"
+  },
+  "description": "",
+  "features": [
+    "Χρώμα",
+    "Χρώμα εσωτερικό"
+  ],
+  "photos": [
+    {
+      "filename": "photo_10.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/d93c79a08f67ea93d5cd3ecbe587b0b5/0e89ccedef7fdb65b6d529e2ee33fc56/2025/09/img_2694.jpeg"
+    },
+    {
+      "filename": "photo_02.jpg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/30d73208d2faf2d850b0ee41fdaad82b/2025/09/whatsapp-image-2025-09-13-at-13.36.33_880c2054-1.jpg"
+    },
+    {
+      "filename": "photo_03.jpg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/30d73208d2faf2d850b0ee41fdaad82b/2025/09/whatsapp-image-2025-09-13-at-13.36.33_880c2054-2.jpg"
+    },
+    {
+      "filename": "photo_04.jpg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/30d73208d2faf2d850b0ee41fdaad82b/2025/09/whatsapp-image-2025-09-13-at-13.36.33_880c2054.jpg"
+    },
+    {
+      "filename": "photo_07.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/d93c79a08f67ea93d5cd3ecbe587b0b5/0e89ccedef7fdb65b6d529e2ee33fc56/2025/09/img_2681.jpeg"
+    },
+    {
+      "filename": "photo_09.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/d93c79a08f67ea93d5cd3ecbe587b0b5/0e89ccedef7fdb65b6d529e2ee33fc56/2025/09/img_2685.jpeg"
+    },
+    {
+      "filename": "photo_06.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/d93c79a08f67ea93d5cd3ecbe587b0b5/0e89ccedef7fdb65b6d529e2ee33fc56/2025/09/img_2674.jpeg"
+    },
+    {
+      "filename": "photo_01.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/0e89ccedef7fdb65b6d529e2ee33fc56/2025/09/img_2676-scaled.jpeg"
+    },
+    {
+      "filename": "photo_05.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/d93c79a08f67ea93d5cd3ecbe587b0b5/0e89ccedef7fdb65b6d529e2ee33fc56/2025/09/img_2670.jpeg"
+    },
+    {
+      "filename": "photo_08.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/d93c79a08f67ea93d5cd3ecbe587b0b5/0e89ccedef7fdb65b6d529e2ee33fc56/2025/09/img_2682.jpeg"
+    },
+    {
+      "filename": "photo_11.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/d93c79a08f67ea93d5cd3ecbe587b0b5/0e89ccedef7fdb65b6d529e2ee33fc56/2025/09/img_2698.jpeg"
+    },
+    {
+      "filename": "photo_12.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/d93c79a08f67ea93d5cd3ecbe587b0b5/0e89ccedef7fdb65b6d529e2ee33fc56/2025/09/img_2707.jpeg"
+    },
+    {
+      "filename": "photo_13.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/d93c79a08f67ea93d5cd3ecbe587b0b5/0e89ccedef7fdb65b6d529e2ee33fc56/2025/09/img_2711.jpeg"
+    },
+    {
+      "filename": "photo_14.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/d93c79a08f67ea93d5cd3ecbe587b0b5/0e89ccedef7fdb65b6d529e2ee33fc56/2025/09/img_2712.jpeg"
+    }
+  ]
+}

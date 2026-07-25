@@ -1,0 +1,33 @@
+{
+  "id": 2858,
+  "uid": "2858",
+  "title": "ATEGO 818",
+  "slug": "atego-818",
+  "url": "https://www.serroukas-cars.gr/car-repository/atego-818/",
+  "price": "100€",
+  "specs": {
+    "code": "2858",
+    "kilometers": "499,000Km",
+    "engine_cc": "5,132cc",
+    "year": "2,016",
+    "hp": "180 hp",
+    "fuel": "Πετρέλαιο",
+    "transmission": "Αυτόματο",
+    "drive": "Πισωκίνητο",
+    "doors": "2",
+    "seats": "2",
+    "emissions": "Euro 6 Euroclass",
+    "interior_type": "Ύφασμα"
+  },
+  "description": "",
+  "features": [
+    "Χρώμα",
+    "Χρώμα εσωτερικό"
+  ],
+  "photos": [
+    {
+      "filename": "photo_01.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/30d73208d2faf2d850b0ee41fdaad82b/2024/12/img_6734-scaled.jpeg"
+    }
+  ]
+}

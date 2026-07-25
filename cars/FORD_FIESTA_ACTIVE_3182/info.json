@@ -1,0 +1,73 @@
+{
+  "id": 3182,
+  "uid": "3182",
+  "title": "FORD FIESTA ACTIVE",
+  "slug": "active-fiesta",
+  "url": "https://www.serroukas-cars.gr/car-repository/active-fiesta/",
+  "price": "14,500€",
+  "specs": {
+    "code": "3182",
+    "kilometers": "154,000Km",
+    "engine_cc": "999cc",
+    "year": "2,019",
+    "hp": "100 hp",
+    "fuel": "Βενζίνη",
+    "transmission": "Αυτόματο",
+    "drive": "Προσθιοκίνητο",
+    "doors": "1",
+    "seats": "1",
+    "emissions": "Euro 6 Euroclass",
+    "interior_type": "Ύφασμα"
+  },
+  "description": "",
+  "features": [
+    "Χρώμα",
+    "Χρώμα εσωτερικό"
+  ],
+  "photos": [
+    {
+      "filename": "photo_01.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/0e89ccedef7fdb65b6d529e2ee33fc56/2025/11/fiat-13.jpeg"
+    },
+    {
+      "filename": "photo_04.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/d93c79a08f67ea93d5cd3ecbe587b0b5/f5bff02c9cd125d255a41bba3ff614aa/2026/05/img_3157-scaled.jpeg"
+    },
+    {
+      "filename": "photo_02.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/0e89ccedef7fdb65b6d529e2ee33fc56/2025/11/whatsapp-image-2025-11-25-at-6.20.32-pm.jpeg"
+    },
+    {
+      "filename": "photo_05.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/d93c79a08f67ea93d5cd3ecbe587b0b5/f5bff02c9cd125d255a41bba3ff614aa/2026/05/img_3160-scaled.jpeg"
+    },
+    {
+      "filename": "photo_06.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/d93c79a08f67ea93d5cd3ecbe587b0b5/f5bff02c9cd125d255a41bba3ff614aa/2026/05/img_3161-scaled.jpeg"
+    },
+    {
+      "filename": "photo_07.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/d93c79a08f67ea93d5cd3ecbe587b0b5/f5bff02c9cd125d255a41bba3ff614aa/2026/05/img_3167-scaled.jpeg"
+    },
+    {
+      "filename": "photo_03.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/d93c79a08f67ea93d5cd3ecbe587b0b5/f5bff02c9cd125d255a41bba3ff614aa/2026/05/img_3151-scaled.jpeg"
+    },
+    {
+      "filename": "photo_09.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/d93c79a08f67ea93d5cd3ecbe587b0b5/f5bff02c9cd125d255a41bba3ff614aa/2026/05/img_3181-scaled.jpeg"
+    },
+    {
+      "filename": "photo_08.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/d93c79a08f67ea93d5cd3ecbe587b0b5/f5bff02c9cd125d255a41bba3ff614aa/2026/05/img_3172-scaled.jpeg"
+    },
+    {
+      "filename": "photo_10.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/d93c79a08f67ea93d5cd3ecbe587b0b5/f5bff02c9cd125d255a41bba3ff614aa/2026/05/img_3187-scaled.jpeg"
+    },
+    {
+      "filename": "photo_11.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/d93c79a08f67ea93d5cd3ecbe587b0b5/f5bff02c9cd125d255a41bba3ff614aa/2026/05/img_3190-scaled.jpeg"
+    }
+  ]
+}

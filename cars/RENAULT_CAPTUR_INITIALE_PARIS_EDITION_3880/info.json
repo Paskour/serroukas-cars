@@ -1,0 +1,53 @@
+{
+  "id": 3880,
+  "uid": "3880",
+  "title": "RENAULT CAPTUR INITIALE PARIS EDITION",
+  "slug": "renault-captur-initiale-paris-edition",
+  "url": "https://www.serroukas-cars.gr/car-repository/renault-captur-initiale-paris-edition/",
+  "price": "22€",
+  "specs": {
+    "code": "3880",
+    "kilometers": "142Km",
+    "engine_cc": "1,461cc",
+    "year": "2,020",
+    "hp": "116 hp",
+    "fuel": "Πετρέλαιο",
+    "transmission": "Αυτόματο",
+    "drive": "Προσθιοκίνητο",
+    "doors": "5",
+    "seats": "5",
+    "emissions": "Euro 6 Euroclass",
+    "interior_type": "Βελούδο"
+  },
+  "description": "",
+  "features": [
+    "Χρώμα",
+    "Χρώμα εσωτερικό"
+  ],
+  "photos": [
+    {
+      "filename": "photo_01.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/d93c79a08f67ea93d5cd3ecbe587b0b5/3201d614d25df6b2a06499d355905b4b/2026/07/img_3054.jpeg"
+    },
+    {
+      "filename": "photo_02.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/d93c79a08f67ea93d5cd3ecbe587b0b5/3201d614d25df6b2a06499d355905b4b/2026/07/img_3056-1.jpeg"
+    },
+    {
+      "filename": "photo_03.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/d93c79a08f67ea93d5cd3ecbe587b0b5/3201d614d25df6b2a06499d355905b4b/2026/07/img_3058.jpeg"
+    },
+    {
+      "filename": "photo_04.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/d93c79a08f67ea93d5cd3ecbe587b0b5/3201d614d25df6b2a06499d355905b4b/2026/07/img_3060.jpeg"
+    },
+    {
+      "filename": "photo_05.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/d93c79a08f67ea93d5cd3ecbe587b0b5/3201d614d25df6b2a06499d355905b4b/2026/07/img_3062.jpeg"
+    },
+    {
+      "filename": "photo_06.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/d93c79a08f67ea93d5cd3ecbe587b0b5/3201d614d25df6b2a06499d355905b4b/2026/07/img_3064.jpeg"
+    }
+  ]
+}

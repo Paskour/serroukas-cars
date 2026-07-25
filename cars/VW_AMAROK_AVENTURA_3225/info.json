@@ -1,0 +1,33 @@
+{
+  "id": 3225,
+  "uid": "3225",
+  "title": "VW AMAROK AVENTURA",
+  "slug": "anentoyra-amarok2020",
+  "url": "https://www.serroukas-cars.gr/car-repository/anentoyra-amarok2020/",
+  "price": "26,500€",
+  "specs": {
+    "code": "3225",
+    "kilometers": "225,000Km",
+    "engine_cc": "2,998cc",
+    "year": "2,020",
+    "hp": "258 hp",
+    "fuel": "Πετρέλαιο",
+    "transmission": "Αυτόματο",
+    "drive": "Προσθιοκίνητο",
+    "doors": "5",
+    "seats": "Αυτόματος Κλιματισμός, Cruise Control (Ρυθμιστής ταχύτητας),  Stop & Start Σύστημα ISG, Δερμάτινο τιμόνι, Διαιρούμενο πίσω κάθισμα 60/40, Εσωτερικός Φωτισμός, Εκκίνηση χωρίς κλειδί (Smart key), Ηλεκτρικά παράθυρα εμπρός, Ηλεκτρικά παράθυρα πίσω, Ηλεκτρικά καθίσματα, Κεντρικό υποβραχιόνιο εμπρός καθισμάτων, Κεντρικό κλείδωμα, Κάθισμα οδηγού ρυθμιζόμενο καθ 'ύψος, Κάθισμα συνοδηγού ρυθμιζόμενο καθ' ύψος,  Θερμαινόμενα οδηγού/συνοδηγού, Τιμόνι πολυλειτουργικό, Τιμόνι ρυθμιζόμενο καθ' ύψος, Προσκέφαλα ρυθμιζόμενα, Υπολογιστής Ταξιδιού, Φωτισμός στο ντουλαπάκι του συνοδηγού, Φωτισμός στον αποθηκευτικό χώρο",
+    "emissions": "Euro 6d Euroclass",
+    "interior_type": "Δέρμα"
+  },
+  "description": "",
+  "features": [
+    "Χρώμα",
+    "Χρώμα εσωτερικό"
+  ],
+  "photos": [
+    {
+      "filename": "photo_01.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/0e89ccedef7fdb65b6d529e2ee33fc56/2026/03/img_4142-scaled.jpeg"
+    }
+  ]
+}

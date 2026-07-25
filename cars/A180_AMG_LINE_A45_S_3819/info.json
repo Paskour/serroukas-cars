@@ -1,0 +1,61 @@
+{
+  "id": 3819,
+  "uid": "3819",
+  "title": "A180 AMG LINE A45 S",
+  "slug": "a180-amg-line-a45-s",
+  "url": "https://www.serroukas-cars.gr/car-repository/a180-amg-line-a45-s/",
+  "price": "0€",
+  "specs": {
+    "code": "3819",
+    "kilometers": "123,000Km",
+    "engine_cc": "1,461cc",
+    "year": "2,019",
+    "hp": "0 hp",
+    "fuel": "Πετρέλαιο",
+    "transmission": "Αυτόματο",
+    "drive": "Προσθιοκίνητο",
+    "doors": "-",
+    "seats": "5",
+    "emissions": "Euro 6 Euroclass",
+    "interior_type": "Δέρμα - Ύφασμα"
+  },
+  "description": "",
+  "features": [
+    "Χρώμα",
+    "Χρώμα εσωτερικό"
+  ],
+  "photos": [
+    {
+      "filename": "photo_07.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/d93c79a08f67ea93d5cd3ecbe587b0b5/3201d614d25df6b2a06499d355905b4b/2026/06/img_5265-1-scaled.jpeg"
+    },
+    {
+      "filename": "photo_08.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/d93c79a08f67ea93d5cd3ecbe587b0b5/f5bff02c9cd125d255a41bba3ff614aa/2026/06/img_5265-scaled.jpeg"
+    },
+    {
+      "filename": "photo_03.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/d93c79a08f67ea93d5cd3ecbe587b0b5/3201d614d25df6b2a06499d355905b4b/2026/06/img_5216-scaled.jpeg"
+    },
+    {
+      "filename": "photo_06.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/d93c79a08f67ea93d5cd3ecbe587b0b5/3201d614d25df6b2a06499d355905b4b/2026/06/img_5253-scaled.jpeg"
+    },
+    {
+      "filename": "photo_04.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/d93c79a08f67ea93d5cd3ecbe587b0b5/3201d614d25df6b2a06499d355905b4b/2026/06/img_5238-scaled.jpeg"
+    },
+    {
+      "filename": "photo_05.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/d93c79a08f67ea93d5cd3ecbe587b0b5/3201d614d25df6b2a06499d355905b4b/2026/06/img_5240-scaled.jpeg"
+    },
+    {
+      "filename": "photo_02.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/d93c79a08f67ea93d5cd3ecbe587b0b5/3201d614d25df6b2a06499d355905b4b/2026/06/img_5215-scaled.jpeg"
+    },
+    {
+      "filename": "photo_01.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/d93c79a08f67ea93d5cd3ecbe587b0b5/3201d614d25df6b2a06499d355905b4b/2026/06/img_5211-scaled.jpeg"
+    }
+  ]
+}

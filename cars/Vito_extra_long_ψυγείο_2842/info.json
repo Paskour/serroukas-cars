@@ -1,0 +1,33 @@
+{
+  "id": 2842,
+  "uid": "2842",
+  "title": "Vito extra long ψυγείο",
+  "slug": "vito-extra-long-%cf%88%cf%85%ce%b3%ce%b5%ce%af%ce%bf",
+  "url": "https://www.serroukas-cars.gr/car-repository/vito-extra-long-%cf%88%cf%85%ce%b3%ce%b5%ce%af%ce%bf/",
+  "price": "17,900€",
+  "specs": {
+    "code": "2842",
+    "kilometers": "200Km",
+    "engine_cc": "1,600cc",
+    "year": "2,016",
+    "hp": "100 hp",
+    "fuel": "Πετρέλαιο",
+    "transmission": "Χειροκίνητο",
+    "drive": "Προσθιοκίνητο",
+    "doors": "5",
+    "seats": "3",
+    "emissions": "Euro 6 Euroclass",
+    "interior_type": "Βελούδο"
+  },
+  "description": "",
+  "features": [
+    "Χρώμα",
+    "Χρώμα εσωτερικό"
+  ],
+  "photos": [
+    {
+      "filename": "photo_01.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/30d73208d2faf2d850b0ee41fdaad82b/2024/11/img_5376-scaled.jpeg"
+    }
+  ]
+}

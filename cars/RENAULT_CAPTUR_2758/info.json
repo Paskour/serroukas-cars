@@ -1,0 +1,53 @@
+{
+  "id": 2758,
+  "uid": "2758",
+  "title": "RENAULT CAPTUR",
+  "slug": "renaualt-captur",
+  "url": "https://www.serroukas-cars.gr/car-repository/renaualt-captur/",
+  "price": "18,900€",
+  "specs": {
+    "code": "2758",
+    "kilometers": "106,000Km",
+    "engine_cc": "0cc",
+    "year": "2,020",
+    "hp": "115 hp",
+    "fuel": "Πετρέλαιο",
+    "transmission": "Αυτόματο",
+    "drive": "Προσθιοκίνητο",
+    "doors": "5",
+    "seats": "5",
+    "emissions": "Euro 6d Euroclass",
+    "interior_type": "Βελούδο"
+  },
+  "description": "",
+  "features": [
+    "Χρώμα",
+    "Χρώμα εσωτερικό"
+  ],
+  "photos": [
+    {
+      "filename": "photo_05.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/0e89ccedef7fdb65b6d529e2ee33fc56/2024/11/img_0163-2-scaled.jpeg"
+    },
+    {
+      "filename": "photo_04.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/0e89ccedef7fdb65b6d529e2ee33fc56/2024/11/img_0162-1-scaled.jpeg"
+    },
+    {
+      "filename": "photo_03.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/0e89ccedef7fdb65b6d529e2ee33fc56/2024/11/img_0090-scaled.jpeg"
+    },
+    {
+      "filename": "photo_06.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/0e89ccedef7fdb65b6d529e2ee33fc56/2024/11/img_0164-scaled.jpeg"
+    },
+    {
+      "filename": "photo_01.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/0e89ccedef7fdb65b6d529e2ee33fc56/2024/11/img_0071-scaled.jpeg"
+    },
+    {
+      "filename": "photo_02.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/0e89ccedef7fdb65b6d529e2ee33fc56/2024/11/img_0077-scaled.jpeg"
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "id": 2865,
+  "uid": "2865",
+  "title": "ATEGO 818",
+  "slug": "atego-818-2",
+  "url": "https://www.serroukas-cars.gr/car-repository/atego-818-2/",
+  "price": "15,000€",
+  "specs": {
+    "code": "2865",
+    "kilometers": "368,000Km",
+    "engine_cc": "0cc",
+    "year": "2,010",
+    "hp": "0 hp",
+    "fuel": "Πετρέλαιο",
+    "transmission": "Χειροκίνητο",
+    "drive": "Πισωκίνητο",
+    "doors": "1",
+    "seats": "1",
+    "emissions": "Euro 5 Euroclass",
+    "interior_type": "Ύφασμα"
+  },
+  "description": "",
+  "features": [
+    "Χρώμα",
+    "Χρώμα εσωτερικό"
+  ],
+  "photos": [
+    {
+      "filename": "photo_05.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/30d73208d2faf2d850b0ee41fdaad82b/2024/12/img_1818-scaled.jpeg"
+    },
+    {
+      "filename": "photo_03.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/0e89ccedef7fdb65b6d529e2ee33fc56/2024/12/img_1827-scaled.jpeg"
+    },
+    {
+      "filename": "photo_01.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/0e89ccedef7fdb65b6d529e2ee33fc56/2024/12/img_1811-scaled.jpeg"
+    },
+    {
+      "filename": "photo_02.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/0e89ccedef7fdb65b6d529e2ee33fc56/2024/12/img_1821-scaled.jpeg"
+    },
+    {
+      "filename": "photo_04.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/0e89ccedef7fdb65b6d529e2ee33fc56/2024/12/img_1828-scaled.jpeg"
+    }
+  ]
+}

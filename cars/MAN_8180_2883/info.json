@@ -1,0 +1,53 @@
+{
+  "id": 2883,
+  "uid": "2883",
+  "title": "MAN 8180",
+  "slug": "8180",
+  "url": "https://www.serroukas-cars.gr/car-repository/8180/",
+  "price": "16,800€",
+  "specs": {
+    "code": "2883",
+    "kilometers": "176,000Km",
+    "engine_cc": "0cc",
+    "year": "2,010",
+    "hp": "180 hp",
+    "fuel": "Πετρέλαιο",
+    "transmission": "Αυτόματο",
+    "drive": "Πισωκίνητο",
+    "doors": "1",
+    "seats": "1",
+    "emissions": "Euro 4 Euroclass",
+    "interior_type": "Βελούδο"
+  },
+  "description": "",
+  "features": [
+    "Χρώμα",
+    "Χρώμα εσωτερικό"
+  ],
+  "photos": [
+    {
+      "filename": "photo_03.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/30d73208d2faf2d850b0ee41fdaad82b/2024/12/img_2238-scaled.jpeg"
+    },
+    {
+      "filename": "photo_02.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/30d73208d2faf2d850b0ee41fdaad82b/2024/12/img_2231-scaled.jpeg"
+    },
+    {
+      "filename": "photo_01.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/30d73208d2faf2d850b0ee41fdaad82b/2024/12/img_2223-scaled.jpeg"
+    },
+    {
+      "filename": "photo_04.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/30d73208d2faf2d850b0ee41fdaad82b/2024/12/img_2239-scaled.jpeg"
+    },
+    {
+      "filename": "photo_05.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/30d73208d2faf2d850b0ee41fdaad82b/2024/12/img_2247-scaled.jpeg"
+    },
+    {
+      "filename": "photo_06.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/30d73208d2faf2d850b0ee41fdaad82b/2024/12/img_2253-scaled.jpeg"
+    }
+  ]
+}

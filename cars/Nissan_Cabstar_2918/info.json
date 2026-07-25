@@ -1,0 +1,53 @@
+{
+  "id": 2918,
+  "uid": "2918",
+  "title": "Nissan Cabstar",
+  "slug": "nissan-cabstar",
+  "url": "https://www.serroukas-cars.gr/car-repository/nissan-cabstar/",
+  "price": "100€",
+  "specs": {
+    "code": "2918",
+    "kilometers": "150,000Km",
+    "engine_cc": "2,952cc",
+    "year": "2,009",
+    "hp": "150 hp",
+    "fuel": "Πετρέλαιο",
+    "transmission": "Αυτόματο",
+    "drive": "Πισωκίνητο",
+    "doors": "1",
+    "seats": "3",
+    "emissions": "Euro 5 Euroclass",
+    "interior_type": "Βελούδο"
+  },
+  "description": "",
+  "features": [
+    "Χρώμα",
+    "Χρώμα εσωτερικό"
+  ],
+  "photos": [
+    {
+      "filename": "photo_01.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/30d73208d2faf2d850b0ee41fdaad82b/2024/12/img_7459-scaled.jpeg"
+    },
+    {
+      "filename": "photo_02.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/30d73208d2faf2d850b0ee41fdaad82b/2024/12/img_7482.jpeg"
+    },
+    {
+      "filename": "photo_03.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/30d73208d2faf2d850b0ee41fdaad82b/2024/12/img_7489.jpeg"
+    },
+    {
+      "filename": "photo_04.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/30d73208d2faf2d850b0ee41fdaad82b/2024/12/img_7498.jpeg"
+    },
+    {
+      "filename": "photo_05.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/30d73208d2faf2d850b0ee41fdaad82b/2024/12/img_7504.jpeg"
+    },
+    {
+      "filename": "photo_06.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/30d73208d2faf2d850b0ee41fdaad82b/2024/12/img_7506.jpeg"
+    }
+  ]
+}

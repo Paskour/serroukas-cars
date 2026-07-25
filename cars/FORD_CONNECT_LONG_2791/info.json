@@ -1,0 +1,33 @@
+{
+  "id": 2791,
+  "uid": "2791",
+  "title": "FORD CONNECT LONG",
+  "slug": "connect",
+  "url": "https://www.serroukas-cars.gr/car-repository/connect/",
+  "price": "10,990€",
+  "specs": {
+    "code": "2791",
+    "kilometers": "171,000Km",
+    "engine_cc": "1,499cc",
+    "year": "2,017",
+    "hp": "101 hp",
+    "fuel": "Πετρέλαιο",
+    "transmission": "Χειροκίνητο",
+    "drive": "Προσθιοκίνητο",
+    "doors": "1",
+    "seats": "1",
+    "emissions": "Euro 6 Euroclass",
+    "interior_type": "Βελούδο"
+  },
+  "description": "",
+  "features": [
+    "Χρώμα",
+    "Χρώμα εσωτερικό"
+  ],
+  "photos": [
+    {
+      "filename": "photo_01.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/30d73208d2faf2d850b0ee41fdaad82b/2024/11/img_8672-1-scaled.jpeg"
+    }
+  ]
+}

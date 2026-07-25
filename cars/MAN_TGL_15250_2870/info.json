@@ -1,0 +1,53 @@
+{
+  "id": 2870,
+  "uid": "2870",
+  "title": "MAN TGL 15250",
+  "slug": "15250",
+  "url": "https://www.serroukas-cars.gr/car-repository/15250/",
+  "price": "100€",
+  "specs": {
+    "code": "2870",
+    "kilometers": "445,000Km",
+    "engine_cc": "0cc",
+    "year": "2,012",
+    "hp": "250 hp",
+    "fuel": "Πετρέλαιο",
+    "transmission": "Χειροκίνητο",
+    "drive": "Πισωκίνητο",
+    "doors": "1",
+    "seats": "1",
+    "emissions": "Euro 5 Euroclass",
+    "interior_type": "Ύφασμα"
+  },
+  "description": "",
+  "features": [
+    "Χρώμα",
+    "Χρώμα εσωτερικό"
+  ],
+  "photos": [
+    {
+      "filename": "photo_04.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/0e89ccedef7fdb65b6d529e2ee33fc56/2024/12/img_5793-1-scaled.jpeg"
+    },
+    {
+      "filename": "photo_01.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/0e89ccedef7fdb65b6d529e2ee33fc56/2024/12/img_5765.jpeg"
+    },
+    {
+      "filename": "photo_02.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/0e89ccedef7fdb65b6d529e2ee33fc56/2024/12/img_5774.jpeg"
+    },
+    {
+      "filename": "photo_03.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/0e89ccedef7fdb65b6d529e2ee33fc56/2024/12/img_5784.jpeg"
+    },
+    {
+      "filename": "photo_07.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/0e89ccedef7fdb65b6d529e2ee33fc56/2024/12/img_5816.jpeg"
+    },
+    {
+      "filename": "photo_06.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/0e89ccedef7fdb65b6d529e2ee33fc56/2024/12/img_5810.jpeg"
+    }
+  ]
+}

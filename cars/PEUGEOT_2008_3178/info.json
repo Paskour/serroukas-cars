@@ -1,0 +1,33 @@
+{
+  "id": 3178,
+  "uid": "3178",
+  "title": "PEUGEOT 2008",
+  "slug": "2008",
+  "url": "https://www.serroukas-cars.gr/car-repository/2008/",
+  "price": "20,300€",
+  "specs": {
+    "code": "3178",
+    "kilometers": "84,000Km",
+    "engine_cc": "1,498cc",
+    "year": "2,021",
+    "hp": "130 hp",
+    "fuel": "Πετρέλαιο",
+    "transmission": "Αυτόματο",
+    "drive": "Προσθιοκίνητο",
+    "doors": "5",
+    "seats": "5",
+    "emissions": "Euro 6d-TEMP Euroclass",
+    "interior_type": "Δέρμα - Ύφασμα"
+  },
+  "description": "",
+  "features": [
+    "Χρώμα",
+    "Χρώμα εσωτερικό"
+  ],
+  "photos": [
+    {
+      "filename": "photo_01.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/0e89ccedef7fdb65b6d529e2ee33fc56/2025/11/img_2937-1-scaled.jpeg"
+    }
+  ]
+}

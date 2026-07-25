@@ -1,0 +1,49 @@
+{
+  "id": 2889,
+  "uid": "2889",
+  "title": "FL 250",
+  "slug": "fl-250",
+  "url": "https://www.serroukas-cars.gr/car-repository/fl-250/",
+  "price": "0€",
+  "specs": {
+    "code": "2889",
+    "kilometers": "267,000Km",
+    "engine_cc": "0cc",
+    "year": "2,014",
+    "hp": "250 hp",
+    "fuel": "Πετρέλαιο",
+    "transmission": "Χειροκίνητο",
+    "drive": "Πισωκίνητο",
+    "doors": "1",
+    "seats": "1",
+    "emissions": "Euro 6 Euroclass",
+    "interior_type": "Ύφασμα"
+  },
+  "description": "",
+  "features": [
+    "Χρώμα",
+    "Χρώμα εσωτερικό"
+  ],
+  "photos": [
+    {
+      "filename": "photo_02.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/30d73208d2faf2d850b0ee41fdaad82b/2024/12/img_4677-scaled.jpeg"
+    },
+    {
+      "filename": "photo_01.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/30d73208d2faf2d850b0ee41fdaad82b/2024/12/img_4672-scaled.jpeg"
+    },
+    {
+      "filename": "photo_03.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/30d73208d2faf2d850b0ee41fdaad82b/2024/12/img_4683-scaled.jpeg"
+    },
+    {
+      "filename": "photo_04.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/30d73208d2faf2d850b0ee41fdaad82b/2024/12/img_4687-scaled.jpeg"
+    },
+    {
+      "filename": "photo_05.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/30d73208d2faf2d850b0ee41fdaad82b/2024/12/img_4707-scaled.jpeg"
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": 3226,
+  "uid": "3226",
+  "title": "FORD RANGER WILDTRACK",
+  "slug": "renger-2",
+  "url": "https://www.serroukas-cars.gr/car-repository/renger-2/",
+  "price": "28,900€",
+  "specs": {
+    "code": "3226",
+    "kilometers": "136,000Km",
+    "engine_cc": "2,000cc",
+    "year": "2,021",
+    "hp": "213 hp",
+    "fuel": "Πετρέλαιο",
+    "transmission": "Αυτόματο",
+    "drive": "Πισωκίνητο",
+    "doors": "1",
+    "seats": "Αυτόματος Κλιματισμός, Cruise Control (Ρυθμιστής ταχύτητας),  Stop & Start Σύστημα ISG, Δερμάτινο τιμόνι, Διαιρούμενο πίσω κάθισμα 60/40, Εσωτερικός Φωτισμός, Εκκίνηση χωρίς κλειδί (Smart key), Ηλεκτρικά παράθυρα εμπρός, Ηλεκτρικά παράθυρα πίσω, Ηλεκτρικά καθίσματα, Κεντρικό υποβραχιόνιο εμπρός καθισμάτων, Κεντρικό κλείδωμα, Κάθισμα οδηγού ρυθμιζόμενο καθ 'ύψος, Κάθισμα συνοδηγού ρυθμιζόμενο καθ' ύψος,  Θερμαινόμενα οδηγού/συνοδηγού, Τιμόνι πολυλειτουργικό, Τιμόνι ρυθμιζόμενο καθ' ύψος, Υπολογιστής Ταξιδιού, Φωτισμός στο ντουλαπάκι του συνοδηγού, Φωτισμός στον αποθηκευτικό χώρο",
+    "emissions": "Euro 6d-TEMP Euroclass",
+    "interior_type": "Δέρμα"
+  },
+  "description": "",
+  "features": [
+    "Χρώμα",
+    "Χρώμα εσωτερικό"
+  ],
+  "photos": [
+    {
+      "filename": "photo_01.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/0e89ccedef7fdb65b6d529e2ee33fc56/2025/09/img_2206.jpeg"
+    },
+    {
+      "filename": "photo_03.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/0e89ccedef7fdb65b6d529e2ee33fc56/2026/03/img_4280-scaled.jpeg"
+    },
+    {
+      "filename": "photo_04.jpg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/30d73208d2faf2d850b0ee41fdaad82b/2025/09/whatsapp-image-2025-09-13-at-13.36.33_880c2054-1.jpg"
+    },
+    {
+      "filename": "photo_05.jpg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/30d73208d2faf2d850b0ee41fdaad82b/2025/09/whatsapp-image-2025-09-13-at-13.36.33_880c2054-2.jpg"
+    },
+    {
+      "filename": "photo_06.jpg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/30d73208d2faf2d850b0ee41fdaad82b/2025/09/whatsapp-image-2025-09-13-at-13.36.33_880c2054.jpg"
+    },
+    {
+      "filename": "photo_02.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/0e89ccedef7fdb65b6d529e2ee33fc56/2025/09/img_2676-scaled.jpeg"
+    }
+  ]
+}

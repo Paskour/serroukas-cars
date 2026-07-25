@@ -1,0 +1,49 @@
+{
+  "id": 2813,
+  "uid": "2813",
+  "title": "FORD TRANSIT",
+  "slug": "ford-tranzit",
+  "url": "https://www.serroukas-cars.gr/car-repository/ford-tranzit/",
+  "price": "16,900€",
+  "specs": {
+    "code": "2813",
+    "kilometers": "195,000Km",
+    "engine_cc": "2,000cc",
+    "year": "2,017",
+    "hp": "131 hp",
+    "fuel": "Πετρέλαιο",
+    "transmission": "Χειροκίνητο",
+    "drive": "Προσθιοκίνητο",
+    "doors": "5",
+    "seats": "3",
+    "emissions": "Euro 6 Euroclass",
+    "interior_type": "Δέρμα - Ύφασμα"
+  },
+  "description": "",
+  "features": [
+    "Χρώμα",
+    "Χρώμα εσωτερικό"
+  ],
+  "photos": [
+    {
+      "filename": "photo_04.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/30d73208d2faf2d850b0ee41fdaad82b/2024/11/img_6103-scaled.jpeg"
+    },
+    {
+      "filename": "photo_03.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/30d73208d2faf2d850b0ee41fdaad82b/2024/11/img_6101-scaled.jpeg"
+    },
+    {
+      "filename": "photo_02.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/30d73208d2faf2d850b0ee41fdaad82b/2024/11/img_6094-scaled.jpeg"
+    },
+    {
+      "filename": "photo_05.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/30d73208d2faf2d850b0ee41fdaad82b/2024/11/img_6112-scaled.jpeg"
+    },
+    {
+      "filename": "photo_01.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/30d73208d2faf2d850b0ee41fdaad82b/2024/11/img_6089-scaled.jpeg"
+    }
+  ]
+}

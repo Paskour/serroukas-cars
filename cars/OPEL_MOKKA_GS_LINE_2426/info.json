@@ -1,0 +1,77 @@
+{
+  "id": 2426,
+  "uid": "2426",
+  "title": "OPEL MOKKA GS LINE",
+  "slug": "mokka-gs-line",
+  "url": "https://www.serroukas-cars.gr/car-repository/mokka-gs-line/",
+  "price": "19,990€",
+  "specs": {
+    "code": "2426",
+    "kilometers": "102,000Km",
+    "engine_cc": "0cc",
+    "year": "2,021",
+    "hp": "130 hp",
+    "fuel": "Βενζίνη",
+    "transmission": "Αυτόματο",
+    "drive": "Προσθιοκίνητο",
+    "doors": "5",
+    "seats": "Αυτόματος Κλιματισμός, Cruise Control (Ρυθμιστής ταχύτητας),  Stop & Start Σύστημα ISG, Δερμάτινο τιμόνι, Διαιρούμενο πίσω κάθισμα 60/40, Εσωτερικός Φωτισμός, Εκκίνηση χωρίς κλειδί (Smart key), Ηλεκτρικά παράθυρα εμπρός, Ηλεκτρικά παράθυρα πίσω, Κεντρικό υποβραχιόνιο εμπρός καθισμάτων, Κεντρικό κλείδωμα, Κάθισμα οδηγού ρυθμιζόμενο καθ 'ύψος, Κάθισμα συνοδηγού ρυθμιζόμενο καθ' ύψος,  Θερμαινόμενα οδηγού/συνοδηγού, Τιμόνι πολυλειτουργικό, Τιμόνι ρυθμιζόμενο καθ' ύψος, Προσκέφαλα ρυθμιζόμενα, Υπολογιστής Ταξιδιού, Φωτισμός στο ντουλαπάκι του συνοδηγού, Φωτισμός στον αποθηκευτικό χώρο",
+    "emissions": "Euro 6d-TEMP Euroclass",
+    "interior_type": "Δέρμα - Ύφασμα"
+  },
+  "description": "",
+  "features": [
+    "Χρώμα",
+    "Χρώμα εσωτερικό"
+  ],
+  "photos": [
+    {
+      "filename": "photo_11.jpg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/30d73208d2faf2d850b0ee41fdaad82b/2024/09/img_97211-scaled.jpg"
+    },
+    {
+      "filename": "photo_03.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/0e89ccedef7fdb65b6d529e2ee33fc56/2026/03/img_3208-scaled.jpeg"
+    },
+    {
+      "filename": "photo_02.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/0e89ccedef7fdb65b6d529e2ee33fc56/2026/03/img_3204.jpeg"
+    },
+    {
+      "filename": "photo_04.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/0e89ccedef7fdb65b6d529e2ee33fc56/2026/03/img_3228.jpeg"
+    },
+    {
+      "filename": "photo_08.jpg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/30d73208d2faf2d850b0ee41fdaad82b/2024/09/img_96931-scaled.jpg"
+    },
+    {
+      "filename": "photo_01.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/0e89ccedef7fdb65b6d529e2ee33fc56/2026/03/img_3201.jpeg"
+    },
+    {
+      "filename": "photo_05.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/0e89ccedef7fdb65b6d529e2ee33fc56/2026/03/img_3229.jpeg"
+    },
+    {
+      "filename": "photo_06.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/0e89ccedef7fdb65b6d529e2ee33fc56/2026/03/img_3232.jpeg"
+    },
+    {
+      "filename": "photo_07.jpeg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/0e89ccedef7fdb65b6d529e2ee33fc56/2026/03/img_3233.jpeg"
+    },
+    {
+      "filename": "photo_09.jpg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/30d73208d2faf2d850b0ee41fdaad82b/2024/09/img_96941-scaled.jpg"
+    },
+    {
+      "filename": "photo_10.jpg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/30d73208d2faf2d850b0ee41fdaad82b/2024/09/img_97121-scaled.jpg"
+    },
+    {
+      "filename": "photo_12.jpg",
+      "original_url": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/30d73208d2faf2d850b0ee41fdaad82b/2024/09/img_97231-scaled.jpg"
+    }
+  ]
+}

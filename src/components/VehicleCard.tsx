@@ -89,8 +89,8 @@ export function VehicleCard({ v }: { v: Vehicle }) {
               <div className="text-[10px] uppercase tracking-widest text-muted-foreground">
                 {tr("price")}
               </div>
-              <div className="font-mono text-2xl font-bold text-gradient-red">
-                € {v.price.toLocaleString("el-GR")}
+              <div className="font-mono text-xl sm:text-2xl font-bold text-gradient-red">
+                {v.price > 0 ? `€ ${v.price.toLocaleString("el-GR")}` : "Κατόπιν Επικοινωνίας"}
               </div>
             </div>
             <a
