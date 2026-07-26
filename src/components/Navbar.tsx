@@ -49,7 +49,7 @@ export function Navbar() {
             <a
               key={l.href}
               href={l.href}
-              className="text-lg font-bold text-foreground/90 hover:text-foreground transition-colors relative after:absolute after:bottom-[-4px] after:left-0 after:h-[3px] after:w-0 hover:after:w-full after:bg-primary after:transition-all tracking-wide"
+              className="font-display text-xl font-bold uppercase tracking-wider text-foreground/90 hover:text-foreground transition-colors relative after:absolute after:bottom-[-4px] after:left-0 after:h-[3px] after:w-0 hover:after:w-full after:bg-primary after:transition-all"
             >
               {l.label}
             </a>
@@ -65,7 +65,7 @@ export function Navbar() {
             <Search className="h-5.5 w-5.5 text-foreground" />
           </button>
           
-          <div className="glass rounded-full p-1 flex items-center text-base font-mono font-bold">
+          <div className="glass rounded-full p-1 flex items-center text-sm font-display font-bold">
             {(["el", "en"] as const).map((l) => (
               <button
                 key={l}
@@ -81,9 +81,9 @@ export function Navbar() {
 
           <a
             href="#book"
-            className="hidden md:inline-flex btn-hero btn-hero-hover rounded-full px-7 py-3 text-base font-bold tracking-wide shadow-xl"
+            className="hidden sm:inline-flex btn-hero btn-hero-hover rounded-full px-7 py-3 text-base font-display font-bold uppercase tracking-wider items-center gap-2.5"
           >
-            {tr("ctaBook")}
+            <span>{tr("navBook")}</span>
           </a>
 
           <button
