@@ -4,7 +4,7 @@ import { useLang } from "@/lib/language";
 const milestones = [
   { year: "1980", el: "Ίδρυση της επιχείρησης στο Άργος από την οικογένεια Σερούκα.", en: "The Serroukas family opens its first office in Argos." },
   { year: "1998", el: "Επέκταση στα επαγγελματικά οχήματα και φορτηγά.", en: "Expansion into commercial vehicles and trucks." },
-  { year: "2012", el: "Νέο σύγχρονο showroom με πλήρες after-sales.", en: "New modern showroom with full after-sales service." },
+  { year: "2012", el: "Νέες σύγχρονες εγκαταστάσεις στο Άργος με πλήρες after-sales.", en: "New modern facilities in Argos with full after-sales service." },
   { year: "Σήμερα", el: "1.200+ οχήματα και τέσσερις κατηγορίες.", en: "1,200+ vehicles across four categories." },
 ];
 
@@ -27,7 +27,7 @@ export function AboutSection() {
         >
           <img
             src="https://images.unsplash.com/photo-1567818735868-e71b99932e29?w=1200&q=80&auto=format&fit=crop"
-            alt="Serroukas showroom"
+            alt="Serroukas Location"
             className="h-full w-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent" />

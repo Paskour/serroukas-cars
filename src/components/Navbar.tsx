@@ -20,7 +20,7 @@ export function Navbar() {
   const links = [
     { href: "#vehicles", label: tr("navVehicles") },
     { href: "#about", label: tr("navAbout") },
-    { href: "#gallery", label: tr("navGallery") },
+    { href: "#location", label: tr("navLocation") },
     { href: "#book", label: tr("navBook") },
   ];
 
@@ -30,78 +30,96 @@ export function Navbar() {
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? "glass-strong py-2 shadow-[var(--shadow-elegant)]" : "py-4 bg-transparent"
+        scrolled ? "glass-strong py-1.5 shadow-[var(--shadow-elegant)]" : "py-2.5 bg-transparent"
       }`}
     >
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
-        <Link to="/" className="flex shrink-0 items-center gap-2">
-          <img src={logo} alt="Serroukas Cars" className="h-40 md:h-48 w-auto" />
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-4 sm:px-6">
+        {/* Logo - Scaled visually up without inflating bar height */}
+        <Link to="/" className="flex shrink-0 items-center overflow-visible py-0.5">
+          <img
+            src={logo}
+            alt="Serroukas Cars"
+            className="h-16 sm:h-20 md:h-24 w-auto object-contain scale-110 sm:scale-125 origin-left transition-transform duration-300 drop-shadow-lg"
+          />
         </Link>
 
-        <nav className="hidden md:flex items-center gap-8">
+        {/* Larger Navigation Links */}
+        <nav className="hidden md:flex items-center gap-8 lg:gap-10">
           {links.map((l) => (
             <a
               key={l.href}
               href={l.href}
-              className="text-sm font-medium text-foreground/80 hover:text-foreground transition-colors relative after:absolute after:bottom-[-6px] after:left-0 after:h-[2px] after:w-0 hover:after:w-full after:bg-primary after:transition-all"
+              className="text-lg font-bold text-foreground/90 hover:text-foreground transition-colors relative after:absolute after:bottom-[-4px] after:left-0 after:h-[3px] after:w-0 hover:after:w-full after:bg-primary after:transition-all tracking-wide"
             >
               {l.label}
             </a>
           ))}
         </nav>
 
-        <div className="flex items-center gap-2">
+        {/* Larger Control Buttons */}
+        <div className="flex items-center gap-3">
           <button
             aria-label="Search"
-            className="hidden sm:grid h-10 w-10 place-items-center rounded-full glass hover:bg-white/5 transition"
+            className="hidden sm:grid h-11 w-11 place-items-center rounded-full glass hover:bg-white/10 transition"
           >
-            <Search className="h-4 w-4" />
+            <Search className="h-5.5 w-5.5 text-foreground" />
           </button>
-          <div className="glass rounded-full p-1 flex items-center text-xs font-mono">
+          
+          <div className="glass rounded-full p-1 flex items-center text-base font-mono font-bold">
             {(["el", "en"] as const).map((l) => (
               <button
                 key={l}
                 onClick={() => setLang(l)}
-                className={`px-3 py-1 rounded-full transition-all ${
-                  lang === l ? "btn-hero" : "text-muted-foreground hover:text-foreground"
+                className={`px-4 py-1.5 rounded-full transition-all ${
+                  lang === l ? "btn-hero shadow-md font-extrabold" : "text-muted-foreground hover:text-foreground"
                 }`}
               >
                 {l.toUpperCase()}
               </button>
             ))}
           </div>
+
           <a
             href="#book"
-            className="hidden md:inline-flex btn-hero btn-hero-hover rounded-full px-5 py-2 text-sm font-semibold"
+            className="hidden md:inline-flex btn-hero btn-hero-hover rounded-full px-7 py-3 text-base font-bold tracking-wide shadow-xl"
           >
             {tr("ctaBook")}
           </a>
+
           <button
-            className="md:hidden grid h-10 w-10 place-items-center rounded-full glass"
+            className="md:hidden grid h-12 w-12 place-items-center rounded-full glass"
             onClick={() => setOpen((v) => !v)}
             aria-label="Menu"
           >
-            {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+            {open ? <X className="h-6.5 w-6.5 text-foreground" /> : <Menu className="h-6.5 w-6.5 text-foreground" />}
           </button>
         </div>
       </div>
 
+      {/* Mobile Drawer */}
       {open && (
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="md:hidden glass-strong mx-4 mt-2 rounded-2xl p-4 flex flex-col gap-3"
+          className="md:hidden glass-strong mx-4 mt-2 rounded-2xl p-6 flex flex-col gap-4 border border-white/10 shadow-2xl"
         >
           {links.map((l) => (
             <a
               key={l.href}
               href={l.href}
               onClick={() => setOpen(false)}
-              className="py-2 text-sm font-medium"
+              className="py-2.5 text-xl font-bold border-b border-white/5 last:border-b-0"
             >
               {l.label}
             </a>
           ))}
+          <a
+            href="#book"
+            onClick={() => setOpen(false)}
+            className="btn-hero btn-hero-hover rounded-full py-3.5 text-center text-base font-bold mt-2"
+          >
+            {tr("ctaBook")}
+          </a>
         </motion.div>
       )}
     </motion.header>

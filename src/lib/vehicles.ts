@@ -1,3 +1,15 @@
+import citroenLogo from "@/assets/brands/citroen.webp";
+import fiatLogo from "@/assets/brands/fiat.webp";
+import fordLogo from "@/assets/brands/ford.webp";
+import manLogo from "@/assets/brands/man.svg";
+import mercedesLogo from "@/assets/brands/mercedes.webp";
+import nissanLogo from "@/assets/brands/nissan.webp";
+import opelLogo from "@/assets/brands/opel.svg";
+import peugeotLogo from "@/assets/brands/peugeot.svg";
+import renaultLogo from "@/assets/brands/renault.svg";
+import vwLogo from "@/assets/brands/volkswagen.svg";
+import volvoLogo from "@/assets/brands/volvo.svg";
+
 export type VehicleType = "passenger" | "commercial" | "truck" | "machine";
 
 export interface Vehicle {
@@ -993,50 +1005,17 @@ export interface Brand {
 }
 
 export const brands: Brand[] = [
-  {
-    "name": "Citroen",
-    "logo": "https://www.serroukas-cars.gr/wp-content/uploads/2024/06/make-13214-150x150.png.webp"
-  },
-  {
-    "name": "Fiat",
-    "logo": "https://www.serroukas-cars.gr/wp-content/uploads/2024/06/make-13302-150x150.png.webp"
-  },
-  {
-    "name": "Ford",
-    "logo": "https://www.serroukas-cars.gr/wp-content/uploads/2024/06/make-13272-150x150.png.webp"
-  },
-  {
-    "name": "MAN",
-    "logo": "https://www.serroukas-cars.gr/wp-content/uploads/2024/06/make-13883-qu6fq3rzclcj5qcjk45n1xrjs9dufl7o1y2nknqw0g.png"
-  },
-  {
-    "name": "Mercedes-Benz",
-    "logo": "https://www.serroukas-cars.gr/wp-content/uploads/2024/06/make-32186-150x150.png.webp"
-  },
-  {
-    "name": "Nissan",
-    "logo": "https://www.serroukas-cars.gr/wp-content/uploads/2024/06/make-14094-150x150.png.webp"
-  },
-  {
-    "name": "Opel",
-    "logo": "https://www.serroukas-cars.gr/wp-content/uploads/2024/06/make-14093-qu6fub3zwx3p2y8q0fkkpdkrfanxuuwgar3tu7ii6o.png"
-  },
-  {
-    "name": "Peugeot",
-    "logo": "https://www.serroukas-cars.gr/wp-content/uploads/2024/06/make-13198-qu6fptfrqygy98120217mxwtnyhgjmcwp8qdr6d3xc.png"
-  },
-  {
-    "name": "Renault",
-    "logo": "https://www.serroukas-cars.gr/wp-content/uploads/2024/06/make-13696-qu6fq1wayx9yiif9v3cdwy8mlhn40707dorom3tocw.png"
-  },
-  {
-    "name": "Volkswagen",
-    "logo": "https://www.serroukas-cars.gr/wp-content/uploads/2024/06/make-13696-qu6fq1wayx9yiif9v3cdwy8mlhn40707dorom3tocw.png"
-  },
-  {
-    "name": "Volvo",
-    "logo": "https://www.serroukas-cars.gr/wp-content/uploads/2024/06/make-13883-qu6fq3rzclcj5qcjk45n1xrjs9dufl7o1y2nknqw0g.png"
-  }
+  { name: "Citroen", logo: citroenLogo },
+  { name: "Fiat", logo: fiatLogo },
+  { name: "Ford", logo: fordLogo },
+  { name: "MAN", logo: manLogo },
+  { name: "Mercedes-Benz", logo: mercedesLogo },
+  { name: "Nissan", logo: nissanLogo },
+  { name: "Opel", logo: opelLogo },
+  { name: "Peugeot", logo: peugeotLogo },
+  { name: "Renault", logo: renaultLogo },
+  { name: "Volkswagen", logo: vwLogo },
+  { name: "Volvo", logo: volvoLogo },
 ];
 
 export const brandNames = brands.map((b) => b.name);

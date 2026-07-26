@@ -49,6 +49,7 @@ export function VehicleCard({ v }: { v: Vehicle }) {
             src={v.image}
             alt={`${v.brand} ${v.model}`}
             loading="lazy"
+            decoding="async"
             className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />

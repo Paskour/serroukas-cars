@@ -4,7 +4,7 @@ import { Hero3D } from "@/components/Hero3D";
 import { BrandCarousel } from "@/components/BrandCarousel";
 import { VehiclesSection } from "@/components/VehiclesSection";
 import { AboutSection } from "@/components/AboutSection";
-import { GallerySection } from "@/components/GallerySection";
+import { LocationSection } from "@/components/LocationSection";
 import { AppointmentForm } from "@/components/AppointmentForm";
 import { Footer } from "@/components/Footer";
 
@@ -21,7 +21,7 @@ function Index() {
         <BrandCarousel />
         <VehiclesSection />
         <AboutSection />
-        <GallerySection />
+        <LocationSection />
         <AppointmentForm />
       </main>
       <Footer />

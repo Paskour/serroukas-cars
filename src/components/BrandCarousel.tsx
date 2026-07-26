@@ -21,8 +21,11 @@ export function BrandCarousel() {
                 src={b.logo}
                 alt={b.name}
                 loading="lazy"
-                className={`max-h-full max-w-full object-contain opacity-80 transition group-hover:opacity-100 ${
-                  b.name === "Nissan" ? "brightness-0 invert" : ""
+                decoding="async"
+                className={`max-h-full max-w-full object-contain opacity-90 transition-all duration-300 group-hover:opacity-100 group-hover:scale-105 ${
+                  ["Volkswagen", "Nissan", "Opel", "Peugeot", "Renault", "MAN", "Volvo"].includes(b.name)
+                    ? "brightness-0 invert"
+                    : ""
                 }`}
               />
             </div>
