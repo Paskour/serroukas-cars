@@ -73,7 +73,7 @@ export function VehiclesSection() {
           <div>
             <div className="text-xs font-mono uppercase tracking-widest text-primary flex items-center gap-2">
               <Sparkles className="w-3.5 h-3.5" />
-              // {tr("featuredTitle")}
+              {tr("featuredTitle")}
             </div>
             <h2 className="mt-3 font-display text-5xl sm:text-6xl leading-none">
               {tr("featuredTitle")}

@@ -48,7 +48,7 @@ export function LocationSection() {
           className="mb-14"
         >
           <div className="text-xs font-mono uppercase tracking-widest text-primary">
-            // {tr("locationKicker")}
+            {tr("locationKicker")}
           </div>
           <h2 className="mt-3 font-display text-5xl sm:text-6xl leading-tight">
             {tr("locationTitle")}

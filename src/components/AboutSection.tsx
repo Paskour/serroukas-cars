@@ -46,7 +46,7 @@ export function AboutSection() {
           transition={{ duration: 0.7 }}
         >
           <div className="text-xs font-mono uppercase tracking-widest text-primary">
-            // {tr("aboutKicker")}
+            {tr("aboutKicker")}
           </div>
           <h2 className="mt-3 font-display text-5xl sm:text-6xl leading-[0.95]">
             {tr("aboutTitle")}

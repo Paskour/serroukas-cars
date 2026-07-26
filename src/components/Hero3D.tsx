@@ -45,7 +45,7 @@ export function Hero3D() {
           </div>
 
           {/* Display Header */}
-          <h1 className="font-display text-6xl sm:text-7xl lg:text-8xl leading-[0.92] tracking-tight">
+          <h1 className="font-display text-4xl sm:text-6xl md:text-7xl lg:text-8xl leading-[0.95] tracking-tight">
             <span className="block">{tr("heroTitle1")}</span>
             <span className="block text-gradient-red">{tr("heroTitle2")}</span>
             <span className="block">{tr("heroTitle3")}</span>

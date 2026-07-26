@@ -69,7 +69,7 @@ export function AppointmentForm() {
           className="text-center mb-12"
         >
           <div className="text-xs font-mono uppercase tracking-widest text-primary">
-            // {tr("navBook")}
+            {tr("navBook")}
           </div>
           <h2 className="mt-3 font-display text-5xl sm:text-6xl">{tr("bookTitle")}</h2>
           <p className="mt-4 text-muted-foreground">{tr("bookSub")}</p>
