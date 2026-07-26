@@ -33,7 +33,7 @@
   --color-surface: var(--surface);
   --color-surface-elevated: var(--surface-elevated);
 
-  --font-display: "Bebas Neue", "Oswald", system-ui, sans-serif;
+  --font-display: "Oswald", "Montserrat", "Bebas Neue", system-ui, sans-serif;
   --font-sans: "Inter", system-ui, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, monospace;
 }
