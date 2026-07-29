@@ -403,11 +403,9 @@ export const vehicles: Vehicle[] = [
     "cc": 999,
     "price": 14500,
     "type": "passenger",
-    "image": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/0e89ccedef7fdb65b6d529e2ee33fc56/2025/11/fiat-13.jpeg",
+    "image": "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/d93c79a08f67ea93d5cd3ecbe587b0b5/f5bff02c9cd125d255a41bba3ff614aa/2026/05/img_3157-scaled.jpeg",
     "images": [
-      "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/0e89ccedef7fdb65b6d529e2ee33fc56/2025/11/fiat-13.jpeg",
       "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/d93c79a08f67ea93d5cd3ecbe587b0b5/f5bff02c9cd125d255a41bba3ff614aa/2026/05/img_3157-scaled.jpeg",
-      "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/0e89ccedef7fdb65b6d529e2ee33fc56/2025/11/whatsapp-image-2025-11-25-at-6.20.32-pm.jpeg",
       "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/d93c79a08f67ea93d5cd3ecbe587b0b5/f5bff02c9cd125d255a41bba3ff614aa/2026/05/img_3160-scaled.jpeg",
       "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/d93c79a08f67ea93d5cd3ecbe587b0b5/f5bff02c9cd125d255a41bba3ff614aa/2026/05/img_3161-scaled.jpeg",
       "https://www.serroukas-cars.gr/wp-content/uploads/jet-form-builder/d93c79a08f67ea93d5cd3ecbe587b0b5/f5bff02c9cd125d255a41bba3ff614aa/2026/05/img_3167-scaled.jpeg",
