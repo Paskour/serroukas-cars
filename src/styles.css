@@ -33,12 +33,16 @@
   --color-surface: var(--surface);
   --color-surface-elevated: var(--surface-elevated);
 
-  --font-display: "Oswald", "Montserrat", "Bebas Neue", system-ui, sans-serif;
-  --font-sans: "Inter", system-ui, sans-serif;
-  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+  --font-display: "Barlow Condensed", "Roboto Condensed", "Oswald", "Montserrat", system-ui, sans-serif;
+  --font-sans: "Inter", "Roboto", system-ui, sans-serif;
+  --font-mono: "Roboto Mono", "IBM Plex Mono", ui-monospace, monospace;
 }
 
 :root {
+  --font-display: "Barlow Condensed", "Roboto Condensed", "Oswald", "Montserrat", system-ui, sans-serif;
+  --font-sans: "Inter", "Roboto", system-ui, sans-serif;
+  --font-mono: "Roboto Mono", "IBM Plex Mono", ui-monospace, monospace;
+
   --radius: 0.5rem;
   --background: oklch(0.16 0.005 260);
   --foreground: oklch(0.96 0.006 90);
@@ -89,7 +93,7 @@
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
-    font-family: var(--font-sans);
+    font-family: var(--font-sans) !important;
     -webkit-font-smoothing: antialiased;
     background-image:
       radial-gradient(circle at 15% 10%, oklch(0.58 0.22 25 / 0.08), transparent 50%),
@@ -98,8 +102,16 @@
   }
 
   h1, h2, h3, h4, h5, h6, .font-display {
-    font-family: var(--font-display);
+    font-family: var(--font-display) !important;
     letter-spacing: 0.02em;
+  }
+
+  .font-sans {
+    font-family: var(--font-sans) !important;
+  }
+
+  .font-mono {
+    font-family: var(--font-mono) !important;
   }
 
   ::selection {

@@ -14,7 +14,7 @@ export const t: Dict = {
   heroKicker: { el: "SERROUKAS CARS · ΑΡΓΟΣ · 1980", en: "SERROUKAS CARS · ARGOS · 1980" },
   heroTitle1: { el: "ΚΙΝΗΣΗ", en: "MOTION" },
   heroTitle2: { el: "ΠΟΥ ΕΜΠΝΕΕΙ", en: "THAT INSPIRES" },
-  heroTitle3: { el: "ΕΜΠΙΣΤΟΣΥΝΗ", en: "TRUST" },
+  heroTitle3: { el: "ΣΙΓΟΥΡΙΑ", en: "TRUST" },
   heroSub: {
     el: "Επιβατικά, επαγγελματικά, φορτηγά και μηχανήματα από την οικογένεια Σερούκα εδώ και 45 χρόνια.",
     en: "Passenger cars, vans, trucks and machinery from the Serroukas family for 45 years.",

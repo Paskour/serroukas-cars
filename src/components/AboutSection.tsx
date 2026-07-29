@@ -23,7 +23,7 @@ export function AboutSection() {
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7 }}
-          className="relative aspect-[4/5] rounded-3xl overflow-hidden glass-strong"
+          className="relative aspect-[4/5] rounded-3xl overflow-hidden glass-strong order-2 lg:order-1"
         >
           <img
             src="https://images.unsplash.com/photo-1567818735868-e71b99932e29?w=1200&q=80&auto=format&fit=crop"
@@ -44,6 +44,7 @@ export function AboutSection() {
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7 }}
+          className="order-1 lg:order-2"
         >
           <div className="text-xs font-mono uppercase tracking-widest text-primary">
             {tr("aboutKicker")}
