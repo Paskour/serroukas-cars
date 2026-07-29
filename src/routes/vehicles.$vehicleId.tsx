@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, createFileRoute, notFound } from "@tanstack/react-router";
-import { ArrowLeft, CalendarDays, ChevronRight, Check } from "lucide-react";
+import { ArrowLeft, CalendarDays, ChevronRight } from "lucide-react";
 import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
 import { vehicles } from "@/lib/vehicles";
@@ -105,19 +105,6 @@ function VehicleDetails() {
               ))}
             </div>
 
-            {vehicle.features && vehicle.features.length > 0 && (
-              <div className="mt-12">
-                <h3 className="font-display text-2xl mb-4">Εξοπλισμός & Παροχές</h3>
-                <div className="grid gap-3 sm:grid-cols-2">
-                  {vehicle.features.map((feat, idx) => (
-                    <div key={idx} className="flex items-start gap-3 glass p-4 rounded-xl">
-                      <Check className="h-5 w-5 text-primary shrink-0 mt-0.5" />
-                      <span className="text-sm">{feat}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
 
             {vehicle.description && (
               <div className="mt-12">
