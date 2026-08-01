@@ -31,17 +31,45 @@ export interface Admin2FAPayload {
 }
 
 /**
+ * Helper to create nodemailer transporter for Gmail
+ */
+function createGmailTransporter(user: string, pass: string, port = 465) {
+  // Strip spaces from App Password if any (e.g. "sfuw shtb dcah ttti" -> "sfuwshtbdcahttti")
+  const cleanPass = pass.replace(/\s+/g, "");
+
+  return nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: port,
+    secure: port === 465, // true for 465, false for 587
+    auth: {
+      user: user.trim(),
+      pass: cleanPass,
+    },
+    connectionTimeout: 10000, // 10 seconds
+    greetingTimeout: 10000,
+  });
+}
+
+/**
  * Step 1: Validates admin credentials and sends 6-digit 2FA OTP via Gmail SMTP
  */
 export const verifyAdminPasswordFn = createServerFn({ method: "POST" })
   .validator((data: unknown) => data as AdminLoginPayload)
   .handler(async ({ data }) => {
-    const { username, password } = data;
+    const inputUsername = (data.username || "").trim();
+    const inputPassword = data.password || "";
 
-    const expectedUsername = process.env.ADMIN_USERNAME || "ser_admin_cars";
-    const expectedPassword = process.env.ADMIN_PASSWORD || "password!A@WS#";
+    // Read env vars or fallbacks
+    const envUser = process.env.ADMIN_USERNAME ? process.env.ADMIN_USERNAME.replace(/^["']|["']$/g, "").trim() : "";
+    const envPass = process.env.ADMIN_PASSWORD ? process.env.ADMIN_PASSWORD.replace(/^["']|["']$/g, "").trim() : "";
 
-    if (username.trim() !== expectedUsername || password !== expectedPassword) {
+    const expectedUsername = envUser || "ser_admin_cars";
+    const expectedPassword = envPass || "password!A@WS#";
+
+    console.log(`[Admin Login Attempt] Username: "${inputUsername}"`);
+
+    // Verify credentials
+    if (inputUsername !== expectedUsername || inputPassword !== expectedPassword) {
       return {
         success: false,
         error: "Invalid username or password.",
@@ -60,59 +88,71 @@ export const verifyAdminPasswordFn = createServerFn({ method: "POST" })
     });
 
     // Gmail SMTP credentials
-    const smtpUser = process.env.SMTP_USER || process.env.GMAIL_USER || "whatdoesthejimsay.jj@gmail.com";
-    const smtpPass = process.env.SMTP_PASS || process.env.GMAIL_APP_PASSWORD || "sfuw shtb dcah ttti";
-    const recipientEmail = process.env.CONTACT_RECIPIENT_EMAIL || smtpUser;
+    const rawSmtpUser = process.env.SMTP_USER || process.env.GMAIL_USER || "whatdoesthejimsay.jj@gmail.com";
+    const rawSmtpPass = process.env.SMTP_PASS || process.env.GMAIL_APP_PASSWORD || "sfuw shtb dcah ttti";
+    
+    const smtpUser = rawSmtpUser.replace(/^["']|["']$/g, "").trim();
+    const smtpPass = rawSmtpPass.replace(/^["']|["']$/g, "").trim();
+    const recipientEmail = (process.env.CONTACT_RECIPIENT_EMAIL || smtpUser).replace(/^["']|["']$/g, "").trim();
 
-    console.log(`[Admin 2FA] Generated OTP code ${otpCode} for challenge ${challengeId}`);
+    // ALWAYS PRINT IN SERVER CONSOLE FOR LOCAL DEV / DEBUGGING
+    console.log(`\n======================================================`);
+    console.log(`🔑 [SERROUKAS ADMIN 2FA CODE]: ${otpCode}`);
+    console.log(`📩 Recipient Inbox: ${recipientEmail}`);
+    console.log(`======================================================\n`);
 
     let emailSent = false;
     let emailError = "";
 
-    try {
-      const transporter = nodemailer.createTransport({
-        host: "smtp.gmail.com",
-        port: 465,
-        secure: true,
-        auth: {
-          user: smtpUser,
-          pass: smtpPass,
-        },
-      });
-
-      const htmlBody = `
-        <div style="font-family: Arial, sans-serif; max-width: 550px; margin: 0 auto; border: 1px solid #e0e0e0; border-radius: 12px; overflow: hidden; background: #ffffff;">
-          <div style="background: #0f172a; padding: 24px; text-align: center; color: white;">
-            <h2 style="margin: 0; font-size: 22px; font-weight: bold; color: #f59e0b;">SERROUKAS CARS</h2>
-            <p style="margin: 4px 0 0 0; font-size: 13px; color: #94a3b8;">Admin Panel Two-Factor Authentication</p>
-          </div>
-          <div style="padding: 32px 24px; text-align: center; color: #1e293b;">
-            <p style="font-size: 15px; margin-bottom: 24px;">Your 6-digit verification code to access the Admin Control Center is:</p>
-            <div style="background: #f8fafc; border: 2px dashed #cbd5e1; padding: 16px 24px; border-radius: 12px; display: inline-block; margin-bottom: 24px;">
-              <span style="font-family: 'Courier New', monospace; font-size: 36px; font-weight: bold; letter-spacing: 8px; color: #0f172a;">${otpCode}</span>
-            </div>
-            <p style="font-size: 13px; color: #64748b; margin-top: 0;">
-              This verification code will expire in <strong>5 minutes</strong>.<br />
-              If you did not request this login, please change your admin password immediately.
-            </p>
-            <hr style="border: 0; border-top: 1px solid #f1f5f9; margin: 24px 0;" />
-            <p style="font-size: 11px; color: #94a3b8;">Serroukas Cars · Security Alert System</p>
-          </div>
+    const htmlBody = `
+      <div style="font-family: Arial, sans-serif; max-width: 550px; margin: 0 auto; border: 1px solid #e0e0e0; border-radius: 12px; overflow: hidden; background: #ffffff;">
+        <div style="background: #0f172a; padding: 24px; text-align: center; color: white;">
+          <h2 style="margin: 0; font-size: 22px; font-weight: bold; color: #f59e0b;">SERROUKAS CARS</h2>
+          <p style="margin: 4px 0 0 0; font-size: 13px; color: #94a3b8;">Admin Panel Two-Factor Authentication</p>
         </div>
-      `;
+        <div style="padding: 32px 24px; text-align: center; color: #1e293b;">
+          <p style="font-size: 15px; margin-bottom: 24px;">Your 6-digit verification code to access the Admin Control Center is:</p>
+          <div style="background: #f8fafc; border: 2px dashed #cbd5e1; padding: 16px 24px; border-radius: 12px; display: inline-block; margin-bottom: 24px;">
+            <span style="font-family: 'Courier New', monospace; font-size: 36px; font-weight: bold; letter-spacing: 8px; color: #0f172a;">${otpCode}</span>
+          </div>
+          <p style="font-size: 13px; color: #64748b; margin-top: 0;">
+            This verification code will expire in <strong>5 minutes</strong>.<br />
+            If you did not request this login, please change your admin password immediately.
+          </p>
+          <hr style="border: 0; border-top: 1px solid #f1f5f9; margin: 24px 0;" />
+          <p style="font-size: 11px; color: #94a3b8;">Serroukas Cars · Security Alert System</p>
+        </div>
+      </div>
+    `;
 
+    // Attempt 1: Port 465 (SSL)
+    try {
+      const transporter = createGmailTransporter(smtpUser, smtpPass, 465);
       await transporter.sendMail({
         from: `"Serroukas Admin Security" <${smtpUser}>`,
         to: recipientEmail,
         subject: `🔒 [Serroukas Admin 2FA] ${otpCode} is your verification code`,
         html: htmlBody,
       });
-
       emailSent = true;
-      console.log(`[Admin 2FA Email] Successfully sent 2FA code to ${recipientEmail}`);
-    } catch (err: any) {
-      console.error("[Admin 2FA Email Error]", err);
-      emailError = err.message;
+      console.log(`[Admin 2FA Email] Successfully sent 2FA code to ${recipientEmail} via Port 465`);
+    } catch (err1: any) {
+      console.warn(`[Port 465 Failed, trying Port 587]`, err1.message);
+      // Attempt 2: Port 587 (STARTTLS)
+      try {
+        const transporter587 = createGmailTransporter(smtpUser, smtpPass, 587);
+        await transporter587.sendMail({
+          from: `"Serroukas Admin Security" <${smtpUser}>`,
+          to: recipientEmail,
+          subject: `🔒 [Serroukas Admin 2FA] ${otpCode} is your verification code`,
+          html: htmlBody,
+        });
+        emailSent = true;
+        console.log(`[Admin 2FA Email] Successfully sent 2FA code to ${recipientEmail} via Port 587`);
+      } catch (err2: any) {
+        console.error("[Admin 2FA Email Error]", err2);
+        emailError = err2.message || "Failed to connect to Gmail SMTP";
+      }
     }
 
     // Mask email for UI display (e.g. w***j@gmail.com)

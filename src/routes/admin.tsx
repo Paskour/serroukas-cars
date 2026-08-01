@@ -168,7 +168,13 @@ function AdminPage() {
 
       setChallengeId(res.challengeId);
       setRecipientEmail(res.rawEmail || "whatdoesthejimsay.jj@gmail.com");
-      setSuccessMessage(`A 6-digit verification code has been sent via Gmail to ${res.recipient || "whatdoesthejimsay.jj@gmail.com"}.`);
+
+      if (res.emailSent) {
+        setSuccessMessage(`A 6-digit verification code has been sent via Gmail to ${res.recipient || "whatdoesthejimsay.jj@gmail.com"}.`);
+      } else {
+        setSuccessMessage(`2FA session started for ${res.recipient}. (Check Gmail inbox or server terminal console)`);
+      }
+
       setAuthStage("2fa");
       setOtpDigits(["", "", "", "", "", ""]);
     } catch (err: any) {
