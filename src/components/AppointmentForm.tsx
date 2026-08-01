@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, ChevronRight, ChevronLeft } from "lucide-react";
+import { Check, ChevronRight, ChevronLeft, Loader2 } from "lucide-react";
 import { useLang } from "@/lib/language";
 import { vehicles } from "@/lib/vehicles";
+import { submitAppointmentFn } from "@/lib/contact";
 
 interface FormData {
   firstName: string;
@@ -27,6 +28,7 @@ export function AppointmentForm() {
   const [step, setStep] = useState(0);
   const [data, setData] = useState<FormData>(initial);
   const [done, setDone] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedVehicle, setSelectedVehicle] = useState<string | null>(null);
 
   useEffect(() => {
@@ -45,13 +47,27 @@ export function AppointmentForm() {
 
   const set = (k: keyof FormData, v: string) => setData((d) => ({ ...d, [k]: v }));
 
-  const submit = () => {
+  const submit = async () => {
+    setIsSubmitting(true);
     try {
+      // Save locally to browser
       const prev = JSON.parse(localStorage.getItem("serroukas_appointments") || "[]");
       prev.push({ ...data, createdAt: new Date().toISOString() });
       localStorage.setItem("serroukas_appointments", JSON.stringify(prev));
-    } catch {}
-    setDone(true);
+
+      // Dispatch to server function (handles Resend API, Telegram Bot, or Webhook)
+      await submitAppointmentFn({
+        data: {
+          ...data,
+          vehicleName: selectedVehicle || undefined,
+        },
+      });
+    } catch (err) {
+      console.error("Failed to submit to server:", err);
+    } finally {
+      setIsSubmitting(false);
+      setDone(true);
+    }
   };
 
   const canNext =
@@ -215,9 +231,17 @@ export function AppointmentForm() {
                   ) : (
                     <button
                       onClick={submit}
-                      className="btn-hero btn-hero-hover rounded-full px-6 py-2.5 text-sm font-semibold"
+                      disabled={isSubmitting}
+                      className="btn-hero btn-hero-hover rounded-full px-6 py-2.5 text-sm font-semibold inline-flex items-center gap-2 disabled:opacity-50"
                     >
-                      {tr("submit")}
+                      {isSubmitting ? (
+                        <>
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                          <span>Sending...</span>
+                        </>
+                      ) : (
+                        tr("submit")
+                      )}
                     </button>
                   )}
                 </div>
