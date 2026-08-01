@@ -71,7 +71,7 @@ function AdminPage() {
   const [authStage, setAuthStage] = useState<"password" | "2fa" | "authenticated">("password");
   
   // Credentials & Challenge States
-  const [username, setUsername] = useState("ser_admin_cars");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [challengeId, setChallengeId] = useState("");
@@ -276,13 +276,6 @@ function AdminPage() {
     }
   };
 
-  // Fill demo credentials
-  const fillCredentials = () => {
-    setUsername("ser_admin_cars");
-    setPassword("password!A@WS#");
-    setErrorMessage("");
-  };
-
   // Handle vehicle deletion
   const handleDeleteVehicle = (id: string) => {
     setVehicles(vehicles.filter((v) => v.id !== id));
@@ -401,31 +394,22 @@ function AdminPage() {
                           type="text"
                           value={username}
                           onChange={(e) => setUsername(e.target.value)}
-                          placeholder="ser_admin_cars"
+                          placeholder="Enter admin username"
                           className="w-full rounded-xl bg-black/40 border border-white/10 px-4 py-3 text-sm text-white placeholder-white/30 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all font-mono"
                           required
                         />
                       </div>
 
                       <div>
-                        <div className="flex items-center justify-between mb-1.5">
-                          <label className="text-xs font-mono uppercase tracking-wider text-muted-foreground">
-                            Password
-                          </label>
-                          <button
-                            type="button"
-                            onClick={fillCredentials}
-                            className="text-[11px] text-primary hover:underline font-mono"
-                          >
-                            Fill admin credentials
-                          </button>
-                        </div>
+                        <label className="block text-xs font-mono uppercase tracking-wider text-muted-foreground mb-1.5">
+                          Password
+                        </label>
                         <div className="relative">
                           <input
                             type={showPassword ? "text" : "password"}
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            placeholder="password!A@WS#"
+                            placeholder="••••••••••••"
                             className="w-full rounded-xl bg-black/40 border border-white/10 px-4 py-3 text-sm text-white placeholder-white/30 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all font-mono pr-10"
                             required
                           />
@@ -440,10 +424,7 @@ function AdminPage() {
                       </div>
 
                       {/* Security indicator */}
-                      <div className="flex items-center justify-between text-xs pt-1">
-                        <span className="text-muted-foreground font-mono text-[11px]">
-                          Target: ser_admin_cars
-                        </span>
+                      <div className="flex items-center justify-end text-xs pt-1">
                         <span className="text-amber-400 flex items-center gap-1 font-mono text-[11px]">
                           <Mail className="w-3.5 h-3.5" /> Gmail 2FA Active
                         </span>
