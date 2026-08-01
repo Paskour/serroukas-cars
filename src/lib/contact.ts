@@ -1,4 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
+import nodemailer from "nodemailer";
 
 export interface ContactPayload {
   firstName: string;
@@ -15,10 +16,15 @@ export const submitAppointmentFn = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     const { firstName, lastName, phone, email, interest, notes, vehicleName } = data;
 
-    // Get environment variables from process.env (Server side in Nitro / Node / Cloudflare)
+    // Get environment variables from process.env (Server side in Nitro / Node)
+    const smtpUser = process.env.SMTP_USER || process.env.GMAIL_USER;
+    const smtpPass = process.env.SMTP_PASS || process.env.GMAIL_APP_PASSWORD;
+    const smtpHost = process.env.SMTP_HOST || "smtp.gmail.com";
+    const smtpPort = parseInt(process.env.SMTP_PORT || "465", 10);
+
     const resendApiKey = process.env.RESEND_API_KEY || (import.meta as any).env?.VITE_RESEND_API_KEY;
-    const recipientEmail = process.env.CONTACT_RECIPIENT_EMAIL || "info@serroukas-cars.gr";
-    const senderEmail = process.env.CONTACT_SENDER_EMAIL || "Serroukas Cars Leads <onboarding@resend.dev>";
+    const recipientEmail = process.env.CONTACT_RECIPIENT_EMAIL || smtpUser || "info@serroukas-cars.gr";
+    const senderEmail = process.env.CONTACT_SENDER_EMAIL || smtpUser || "Serroukas Cars Leads <onboarding@resend.dev>";
     
     const telegramBotToken = process.env.TELEGRAM_BOT_TOKEN;
     const telegramChatId = process.env.TELEGRAM_CHAT_ID;
@@ -34,6 +40,7 @@ export const submitAppointmentFn = createServerFn({ method: "POST" })
     });
 
     const results = {
+      smtp: false,
       resend: false,
       telegram: false,
       webhook: false,
@@ -65,7 +72,36 @@ export const submitAppointmentFn = createServerFn({ method: "POST" })
       </div>
     `;
 
-    // 1. Delivery via Resend API if API Key is set
+    // 1. Delivery via SMTP / Gmail if SMTP_USER and SMTP_PASS are set
+    if (smtpUser && smtpPass) {
+      try {
+        const transporter = nodemailer.createTransport({
+          host: smtpHost,
+          port: smtpPort,
+          secure: smtpPort === 465, // true for 465, false for 587
+          auth: {
+            user: smtpUser,
+            pass: smtpPass,
+          },
+        });
+
+        await transporter.sendMail({
+          from: `"${firstName} ${lastName} (via Serroukas Cars)" <${smtpUser}>`,
+          to: recipientEmail,
+          replyTo: email,
+          subject: emailSubject,
+          html: emailHtml,
+        });
+
+        results.smtp = true;
+        results.messages.push("Email sent successfully via Gmail SMTP.");
+      } catch (err: any) {
+        console.error("[SMTP Error]", err);
+        results.messages.push(`SMTP Error: ${err.message}`);
+      }
+    }
+
+    // 2. Delivery via Resend API if API Key is set
     if (resendApiKey) {
       try {
         const response = await fetch("https://api.resend.com/emails", {
@@ -97,7 +133,7 @@ export const submitAppointmentFn = createServerFn({ method: "POST" })
       }
     }
 
-    // 2. Delivery via Telegram Bot if token & chat_id are configured
+    // 3. Delivery via Telegram Bot if token & chat_id are configured
     if (telegramBotToken && telegramChatId) {
       try {
         const telegramMessage = `🚘 *ΝΕΟ ΑΙΤΗΜΑ SERROUKAS CARS*\n\n` +
@@ -128,7 +164,7 @@ export const submitAppointmentFn = createServerFn({ method: "POST" })
       }
     }
 
-    // 3. Delivery via Webhook (Slack, Discord, Zapier, CRM)
+    // 4. Delivery via Webhook (Slack, Discord, Zapier, CRM)
     if (webhookUrl) {
       try {
         await fetch(webhookUrl, {
@@ -148,9 +184,9 @@ export const submitAppointmentFn = createServerFn({ method: "POST" })
     }
 
     // If no provider env variables were set, log notice
-    if (!resendApiKey && !telegramBotToken && !webhookUrl) {
+    if (!smtpUser && !resendApiKey && !telegramBotToken && !webhookUrl) {
       console.warn(
-        "[Contact Service Warning] No email service or webhook configured. Set RESEND_API_KEY or TELEGRAM_BOT_TOKEN or CONTACT_WEBHOOK_URL to receive live emails/alerts."
+        "[Contact Service Warning] No email service or webhook configured. Set SMTP_USER and SMTP_PASS (or GMAIL_USER & GMAIL_APP_PASSWORD) to receive Gmail emails."
       );
       results.messages.push(
         "No email service provider configured in ENV. Submission saved locally."
@@ -159,7 +195,7 @@ export const submitAppointmentFn = createServerFn({ method: "POST" })
 
     return {
       success: true,
-      delivered: results.resend || results.telegram || results.webhook,
+      delivered: results.smtp || results.resend || results.telegram || results.webhook,
       results,
     };
   });
