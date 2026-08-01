@@ -16,7 +16,7 @@ export const t: Dict = {
   heroTitle2: { el: "ΠΟΥ ΕΜΠΝΕΕΙ", en: "THAT INSPIRES" },
   heroTitle3: { el: "ΣΙΓΟΥΡΙΑ", en: "TRUST" },
   heroSub: {
-    el: "Επιβατικά, επαγγελματικά, φορτηγά και μηχανήματα από την οικογένεια Σερούκα εδώ και 45 χρόνια.",
+    el: "Επιβατικά, επαγγελματικά, φορτηγά και μηχανήματα από την οικογένεια Σερρούκα εδώ και 45 χρόνια.",
     en: "Passenger cars, vans, trucks and machinery from the Serroukas family for 45 years.",
   },
   ctaSee: { el: "Δες τα Οχήματα", en: "Browse Vehicles" },
@@ -39,7 +39,7 @@ export const t: Dict = {
   aboutKicker: { el: "Η ΙΣΤΟΡΙΑ ΜΑΣ", en: "OUR STORY" },
   aboutTitle: { el: "Τέσσερις δεκαετίες στον δρόμο.", en: "Four decades on the road." },
   aboutText: {
-    el: "Από το 1980, η οικογένεια Σερούκα εξυπηρετεί την Αργολίδα με αξιοπιστία, διαφάνεια και βαθιά γνώση της αγοράς αυτοκινήτου — από το πρώτο μικρό γραφείο στο Άργος μέχρι τις σημερινές σύγχρονες εγκαταστάσεις μας στην Ιωάννου Γεωργίου Τσαγκάρη.",
+    el: "Από το 1980, η οικογένεια Σερρούκα εξυπηρετεί την Αργολίδα με αξιοπιστία, διαφάνεια και βαθιά γνώση της αγοράς αυτοκινήτου — από το πρώτο μικρό γραφείο στο Άργος μέχρι τις σημερινές σύγχρονες εγκαταστάσεις μας στην Ιωάννου Γεωργίου Τσαγκάρη.",
     en: "Since 1980, the Serroukas family has been serving Argolida with reliability, transparency, and deep automotive expertise — from a small office in Argos to today's modern facilities on Ioannou Georgiou Tsagkari.",
   },
   locationKicker: { el: "Η ΤΟΠΟΘΕΣΙΑ ΜΑΣ", en: "OUR LOCATION" },

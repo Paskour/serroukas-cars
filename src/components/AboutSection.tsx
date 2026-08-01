@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { useLang } from "@/lib/language";
 
 const milestones = [
-  { year: "1980", el: "Ίδρυση της επιχείρησης στο Άργος από την οικογένεια Σερούκα.", en: "The Serroukas family opens its first office in Argos." },
+  { year: "1980", el: "Ίδρυση της επιχείρησης στο Άργος από την οικογένεια Σερρούκα.", en: "The Serroukas family opens its first office in Argos." },
   { year: "1998", el: "Επέκταση στα επαγγελματικά οχήματα και φορτηγά.", en: "Expansion into commercial vehicles and trucks." },
   { year: "2012", el: "Νέες σύγχρονες εγκαταστάσεις στο Άργος με πλήρες after-sales.", en: "New modern facilities in Argos with full after-sales service." },
   { year: "Σήμερα", el: "1.200+ οχήματα και τέσσερις κατηγορίες.", en: "1,200+ vehicles across four categories." },
