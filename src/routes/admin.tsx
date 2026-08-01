@@ -4,43 +4,35 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   ShieldCheck,
   Lock,
-  KeyRound,
   Eye,
   EyeOff,
-  UserCheck,
   Car,
   Plus,
   Search,
-  Filter,
   Trash2,
-  Edit3,
   LogOut,
   RefreshCw,
-  QrCode,
   Copy,
   Check,
   AlertCircle,
   Clock,
   ArrowRight,
-  ChevronRight,
-  Calendar,
   DollarSign,
   Users,
-  CheckCircle2,
-  ShieldAlert,
-  Smartphone,
-  Info,
-  X,
   FileText,
   BadgeCheck,
+  Mail,
+  X,
+  CheckCircle2,
 } from "lucide-react";
 import logo from "@/assets/serroukas-logo-white.png";
+import { verifyAdminPasswordFn, verifyAdmin2FAFn } from "@/lib/admin-auth";
 
 export const Route = createFileRoute("/admin")({
   component: AdminPage,
 });
 
-// Initial mock vehicle data for the admin panel
+// Mock vehicle data for the admin panel
 interface AdminVehicle {
   id: string;
   name: string;
@@ -78,27 +70,27 @@ function AdminPage() {
   // Authentication states: "password" -> "2fa" -> "authenticated"
   const [authStage, setAuthStage] = useState<"password" | "2fa" | "authenticated">("password");
   
-  // Credentials & Form States
-  const [username, setUsername] = useState("admin");
+  // Credentials & Challenge States
+  const [username, setUsername] = useState("ser_admin_cars");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [challengeId, setChallengeId] = useState("");
+  const [recipientEmail, setRecipientEmail] = useState("whatdoesthejimsay.jj@gmail.com");
+
+  // 2FA OTP Digits
   const [otpDigits, setOtpDigits] = useState<string[]>(["", "", "", "", "", ""]);
-  const [useBackupCode, setUseBackupCode] = useState(false);
-  const [backupCodeInput, setBackupCodeInput] = useState("");
-  const [rememberMe, setRememberMe] = useState(true);
   
   // Feedback & Loading
   const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [showDemoInfo, setShowDemoInfo] = useState(true);
 
   // Active Tab inside Admin Dashboard
   const [activeTab, setActiveTab] = useState<"overview" | "vehicles" | "leads" | "security">("overview");
 
   // 2FA Security Configuration
-  const [totpEnabled, setTotpEnabled] = useState(true);
   const totpSecret = "JBSWY3DPEHPK3PXP";
-  const [backupCodes, setBackupCodes] = useState([
+  const [backupCodes] = useState([
     "8391-2049", "1048-9382", "5729-1102", "9940-3812",
     "4810-5592", "3019-8274", "7710-4493", "2059-6618"
   ]);
@@ -106,7 +98,7 @@ function AdminPage() {
 
   // Admin Data State
   const [vehicles, setVehicles] = useState<AdminVehicle[]>(initialVehicles);
-  const [leads, setLeads] = useState<AppointmentLead[]>(initialLeads);
+  const [leads] = useState<AppointmentLead[]>(initialLeads);
   const [searchQuery, setSearchQuery] = useState("");
   const [categoryFilter, setCategoryFilter] = useState<string>("all");
 
@@ -125,10 +117,10 @@ function AdminPage() {
   // Auto-clear error when user types
   useEffect(() => {
     if (errorMessage) setErrorMessage("");
-  }, [username, password, otpDigits, backupCodeInput]);
+  }, [username, password, otpDigits]);
 
   // Session expiry simulation (30 minute timer)
-  const [sessionTimeRemaining, setSessionTimeRemaining] = useState(1800); // 30 minutes in seconds
+  const [sessionTimeRemaining, setSessionTimeRemaining] = useState(1800);
   useEffect(() => {
     if (authStage !== "authenticated") return;
     const timer = setInterval(() => {
@@ -152,8 +144,8 @@ function AdminPage() {
     return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
   };
 
-  // Step 1: Submit Password Form
-  const handlePasswordSubmit = (e: React.FormEvent) => {
+  // Step 1: Submit Password Form to trigger Server 2FA email
+  const handlePasswordSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!username.trim() || !password.trim()) {
       setErrorMessage("Please enter both username and password.");
@@ -161,20 +153,30 @@ function AdminPage() {
     }
 
     setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-      // Demo credentials validation: username 'admin' (or admin@serroukas-cars.gr) and password 'admin' or 'Serroukas2026!'
-      // For smooth demo experience, any password containing 'admin' or matching 'Serroukas2026!' or length >= 4 passes
-      if (
-        (username.toLowerCase() === "admin" || username.toLowerCase().includes("serroukas")) &&
-        (password.length >= 3)
-      ) {
-        setAuthStage("2fa");
-        setErrorMessage("");
-      } else {
-        setErrorMessage("Invalid username or password. (Demo: admin / admin)");
+    setErrorMessage("");
+
+    try {
+      const res = await verifyAdminPasswordFn({
+        data: { username: username.trim(), password },
+      });
+
+      if (!res.success) {
+        setErrorMessage(res.error || "Invalid username or password.");
+        setIsLoading(false);
+        return;
       }
-    }, 600);
+
+      setChallengeId(res.challengeId);
+      setRecipientEmail(res.rawEmail || "whatdoesthejimsay.jj@gmail.com");
+      setSuccessMessage(`A 6-digit verification code has been sent via Gmail to ${res.recipient || "whatdoesthejimsay.jj@gmail.com"}.`);
+      setAuthStage("2fa");
+      setOtpDigits(["", "", "", "", "", ""]);
+    } catch (err: any) {
+      console.error(err);
+      setErrorMessage("Authentication server error. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   // OTP Input change handler
@@ -209,48 +211,69 @@ function AdminPage() {
     }
   };
 
-  // Step 2: Submit 2FA Code
-  const handle2faSubmit = (e: React.FormEvent) => {
+  // Step 2: Submit 2FA Code to Server
+  const handle2faSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const fullCode = otpDigits.join("");
+
+    if (fullCode.length < 6) {
+      setErrorMessage("Please enter all 6 verification digits.");
+      return;
+    }
+
     setIsLoading(true);
+    setErrorMessage("");
 
-    setTimeout(() => {
-      setIsLoading(false);
-      if (useBackupCode) {
-        if (backupCodes.includes(backupCodeInput.trim())) {
-          // Consume backup code
-          setBackupCodes(backupCodes.filter((c) => c !== backupCodeInput.trim()));
-          setAuthStage("authenticated");
-          setSessionTimeRemaining(1800);
-          setErrorMessage("");
-        } else {
-          setErrorMessage("Invalid backup code. (Demo code: 8391-2049)");
-        }
-      } else {
-        const fullCode = otpDigits.join("");
-        if (fullCode.length < 6) {
-          setErrorMessage("Please enter all 6 verification digits.");
-          return;
-        }
+    try {
+      const res = await verifyAdmin2FAFn({
+        data: {
+          challengeId,
+          code: fullCode,
+        },
+      });
 
-        // Demo rule: Any 6 digits work, or '123456'
-        setAuthStage("authenticated");
-        setSessionTimeRemaining(1800);
-        setErrorMessage("");
+      if (!res.success) {
+        setErrorMessage(res.error || "Incorrect 6-digit verification code.");
+        setIsLoading(false);
+        return;
       }
-    }, 700);
+
+      setAuthStage("authenticated");
+      setSessionTimeRemaining(1800);
+      setErrorMessage("");
+    } catch (err: any) {
+      console.error(err);
+      setErrorMessage("2FA Verification error. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Resend 2FA Email Code
+  const handleResendCode = async () => {
+    setIsLoading(true);
+    setErrorMessage("");
+    try {
+      const res = await verifyAdminPasswordFn({
+        data: { username: username.trim(), password },
+      });
+      if (res.success) {
+        setChallengeId(res.challengeId);
+        setSuccessMessage(`New code emailed to ${res.recipient || "whatdoesthejimsay.jj@gmail.com"}.`);
+      } else {
+        setErrorMessage("Failed to resend code. Please sign in again.");
+      }
+    } catch {
+      setErrorMessage("Network error resending email code.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   // Fill demo credentials
-  const fillDemoCredentials = () => {
-    setUsername("admin@serroukas-cars.gr");
-    setPassword("Serroukas2026!");
-    setErrorMessage("");
-  };
-
-  // Fill demo 2FA code
-  const fillDemo2FA = () => {
-    setOtpDigits(["1", "2", "3", "4", "5", "6"]);
+  const fillCredentials = () => {
+    setUsername("ser_admin_cars");
+    setPassword("password!A@WS#");
     setErrorMessage("");
   };
 
@@ -313,7 +336,7 @@ function AdminPage() {
       <div className="absolute top-0 left-1/4 h-[500px] w-[500px] rounded-full bg-primary/10 blur-[140px] pointer-events-none -z-10" />
       <div className="absolute bottom-10 right-10 h-[400px] w-[400px] rounded-full bg-amber-500/5 blur-[120px] pointer-events-none -z-10" />
 
-      {/* Top Simple Banner Header for Auth Stages */}
+      {/* Header for Auth Stages */}
       {authStage !== "authenticated" && (
         <header className="border-b border-white/10 bg-surface/40 backdrop-blur-md px-6 py-4 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-3 group">
@@ -322,7 +345,7 @@ function AdminPage() {
           </Link>
           <div className="flex items-center gap-4">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono bg-primary/10 border border-primary/20 text-primary">
-              <Lock className="w-3 h-3" /> Secure Admin Portal
+              <Lock className="w-3 h-3" /> Gmail SMTP 2FA Secured
             </span>
             <Link to="/" className="text-xs font-medium text-muted-foreground hover:text-white transition-colors">
               Back to Site &rarr;
@@ -337,48 +360,6 @@ function AdminPage() {
       {authStage !== "authenticated" && (
         <main className="flex min-h-[calc(100dvh-65px)] items-center justify-center p-4 sm:p-6">
           <div className="w-full max-w-md">
-            {/* Demo Helper Box */}
-            {showDemoInfo && (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="mb-6 glass-strong rounded-xl p-4 border border-amber-500/30 bg-amber-500/10 text-xs leading-relaxed relative"
-              >
-                <button
-                  onClick={() => setShowDemoInfo(false)}
-                  className="absolute top-2 right-2 text-muted-foreground hover:text-white"
-                  title="Dismiss"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-                <div className="flex items-start gap-2.5">
-                  <Info className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
-                  <div>
-                    <span className="font-bold text-amber-300 uppercase tracking-wider block mb-1">
-                      Demo Mode Info
-                    </span>
-                    <p className="text-amber-100/90 mb-2">
-                      This page simulates a multi-factor protected admin panel. You can test both authentication stages with demo inputs:
-                    </p>
-                    <div className="grid grid-cols-2 gap-2 bg-black/40 p-2 rounded border border-amber-500/20 font-mono text-[11px]">
-                      <div>
-                        <span className="text-muted-foreground">Username:</span> admin
-                      </div>
-                      <div>
-                        <span className="text-muted-foreground">Password:</span> admin
-                      </div>
-                      <div>
-                        <span className="text-muted-foreground">2FA OTP:</span> 123456
-                      </div>
-                      <div>
-                        <span className="text-muted-foreground">Backup Code:</span> 8391-2049
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            )}
-
             {/* Auth Glass Card */}
             <div className="glass-strong rounded-2xl p-6 sm:p-8 border border-white/15 shadow-2xl relative overflow-hidden">
               <div className="absolute -top-12 -right-12 w-32 h-32 bg-primary/20 rounded-full blur-2xl pointer-events-none" />
@@ -399,27 +380,25 @@ function AdminPage() {
                       <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-primary/15 border border-primary/30 text-primary mb-4 shadow-inner">
                         <Lock className="w-7 h-7" />
                       </div>
-                      <h1 className="text-2xl font-bold font-display tracking-tight text-white">Admin Authentication</h1>
+                      <h1 className="text-2xl font-bold font-display tracking-tight text-white">Admin Portal Login</h1>
                       <p className="text-sm text-muted-foreground mt-1">
-                        Sign in to access the Serroukas Cars management dashboard.
+                        Sign in to generate your 2FA verification email.
                       </p>
                     </div>
 
                     <form onSubmit={handlePasswordSubmit} className="space-y-4">
                       <div>
                         <label className="block text-xs font-mono uppercase tracking-wider text-muted-foreground mb-1.5">
-                          Username or Email
+                          Admin Username
                         </label>
-                        <div className="relative">
-                          <input
-                            type="text"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                            placeholder="admin@serroukas-cars.gr"
-                            className="w-full rounded-xl bg-black/40 border border-white/10 px-4 py-3 text-sm text-white placeholder-white/30 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all font-mono"
-                            required
-                          />
-                        </div>
+                        <input
+                          type="text"
+                          value={username}
+                          onChange={(e) => setUsername(e.target.value)}
+                          placeholder="ser_admin_cars"
+                          className="w-full rounded-xl bg-black/40 border border-white/10 px-4 py-3 text-sm text-white placeholder-white/30 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all font-mono"
+                          required
+                        />
                       </div>
 
                       <div>
@@ -429,10 +408,10 @@ function AdminPage() {
                           </label>
                           <button
                             type="button"
-                            onClick={fillDemoCredentials}
+                            onClick={fillCredentials}
                             className="text-[11px] text-primary hover:underline font-mono"
                           >
-                            Auto-fill demo
+                            Fill admin credentials
                           </button>
                         </div>
                         <div className="relative">
@@ -440,7 +419,7 @@ function AdminPage() {
                             type={showPassword ? "text" : "password"}
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            placeholder="••••••••••••"
+                            placeholder="password!A@WS#"
                             className="w-full rounded-xl bg-black/40 border border-white/10 px-4 py-3 text-sm text-white placeholder-white/30 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all font-mono pr-10"
                             required
                           />
@@ -454,19 +433,13 @@ function AdminPage() {
                         </div>
                       </div>
 
-                      {/* Remember me & Security indicator */}
+                      {/* Security indicator */}
                       <div className="flex items-center justify-between text-xs pt-1">
-                        <label className="flex items-center gap-2 cursor-pointer text-muted-foreground hover:text-white">
-                          <input
-                            type="checkbox"
-                            checked={rememberMe}
-                            onChange={(e) => setRememberMe(e.target.checked)}
-                            className="rounded border-white/20 bg-black/40 text-primary focus:ring-primary"
-                          />
-                          <span>Remember device</span>
-                        </label>
-                        <span className="text-emerald-400 flex items-center gap-1 font-mono text-[11px]">
-                          <ShieldCheck className="w-3.5 h-3.5" /> 2FA Enforced
+                        <span className="text-muted-foreground font-mono text-[11px]">
+                          Target: ser_admin_cars
+                        </span>
+                        <span className="text-amber-400 flex items-center gap-1 font-mono text-[11px]">
+                          <Mail className="w-3.5 h-3.5" /> Gmail 2FA Active
                         </span>
                       </div>
 
@@ -491,11 +464,11 @@ function AdminPage() {
                         {isLoading ? (
                           <>
                             <RefreshCw className="w-4 h-4 animate-spin" />
-                            Verifying Credentials...
+                            Authenticating & Sending Email Code...
                           </>
                         ) : (
                           <>
-                            Continue to 2FA Verification
+                            Sign In & Send 2FA Email Code
                             <ArrowRight className="w-4 h-4" />
                           </>
                         )}
@@ -505,7 +478,7 @@ function AdminPage() {
                 )}
 
                 {/* ------------------------------------------------------------- */}
-                {/* STEP 2: TWO-FACTOR AUTHENTICATION (2FA)                       */}
+                {/* STEP 2: EMAIL TWO-FACTOR AUTHENTICATION                       */}
                 {/* ------------------------------------------------------------- */}
                 {authStage === "2fa" && (
                   <motion.div
@@ -517,75 +490,59 @@ function AdminPage() {
                   >
                     <div className="text-center mb-6">
                       <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-amber-500/15 border border-amber-500/30 text-amber-400 mb-4 shadow-inner">
-                        <ShieldCheck className="w-7 h-7" />
+                        <Mail className="w-7 h-7" />
                       </div>
-                      <h1 className="text-2xl font-bold font-display tracking-tight text-white">Two-Factor Authentication</h1>
+                      <h1 className="text-2xl font-bold font-display tracking-tight text-white">Check Your Email</h1>
                       <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">
-                        Enter the 6-digit TOTP code generated by your Authenticator app (e.g. Google Authenticator, 1Password).
+                        A 6-digit 2FA verification code was sent via Gmail SMTP to:
                       </p>
+                      <div className="mt-2 inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-black/50 border border-amber-500/30 text-amber-300 font-mono text-xs font-semibold">
+                        <Mail className="w-3.5 h-3.5 text-amber-400" />
+                        {recipientEmail}
+                      </div>
                     </div>
 
                     <form onSubmit={handle2faSubmit} className="space-y-5">
-                      {!useBackupCode ? (
-                        <div>
-                          <div className="flex items-center justify-between mb-2">
-                            <span className="text-xs font-mono uppercase tracking-wider text-muted-foreground">
-                              Verification Code (OTP)
-                            </span>
-                            <button
-                              type="button"
-                              onClick={fillDemo2FA}
-                              className="text-[11px] text-amber-400 hover:underline font-mono"
-                            >
-                              Auto-fill 123456
-                            </button>
-                          </div>
-
-                          {/* 6 Digit Input Boxes */}
-                          <div className="flex items-center justify-between gap-1.5 sm:gap-2">
-                            {otpDigits.map((digit, idx) => (
-                              <input
-                                key={idx}
-                                ref={(el) => (otpInputRefs.current[idx] = el)}
-                                type="text"
-                                maxLength={1}
-                                value={digit}
-                                onChange={(e) => handleOtpChange(idx, e.target.value)}
-                                onKeyDown={(e) => handleOtpKeyDown(idx, e)}
-                                onPaste={handleOtpPaste}
-                                className="w-11 sm:w-12 h-13 text-center text-xl font-bold font-mono bg-black/50 border border-white/15 rounded-xl text-white focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition-all shadow-inner"
-                              />
-                            ))}
-                          </div>
+                      <div>
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-xs font-mono uppercase tracking-wider text-muted-foreground">
+                            6-Digit Verification Code
+                          </span>
+                          <button
+                            type="button"
+                            onClick={handleResendCode}
+                            disabled={isLoading}
+                            className="text-[11px] text-amber-400 hover:underline font-mono disabled:opacity-50"
+                          >
+                            Resend Email Code
+                          </button>
                         </div>
-                      ) : (
-                        <div>
-                          <label className="block text-xs font-mono uppercase tracking-wider text-muted-foreground mb-1.5">
-                            Emergency Backup Code
-                          </label>
-                          <input
-                            type="text"
-                            value={backupCodeInput}
-                            onChange={(e) => setBackupCodeInput(e.target.value)}
-                            placeholder="e.g. 8391-2049"
-                            className="w-full rounded-xl bg-black/40 border border-white/10 px-4 py-3 text-sm text-white placeholder-white/30 focus:outline-none focus:border-amber-400 font-mono tracking-widest text-center uppercase"
-                          />
+
+                        {/* 6 Digit Input Boxes */}
+                        <div className="flex items-center justify-between gap-1.5 sm:gap-2">
+                          {otpDigits.map((digit, idx) => (
+                            <input
+                              key={idx}
+                              ref={(el) => (otpInputRefs.current[idx] = el)}
+                              type="text"
+                              maxLength={1}
+                              value={digit}
+                              onChange={(e) => handleOtpChange(idx, e.target.value)}
+                              onKeyDown={(e) => handleOtpKeyDown(idx, e)}
+                              onPaste={handleOtpPaste}
+                              className="w-11 sm:w-12 h-13 text-center text-xl font-bold font-mono bg-black/50 border border-white/15 rounded-xl text-white focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition-all shadow-inner"
+                            />
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Success / Info Message */}
+                      {successMessage && (
+                        <div className="p-3 rounded-lg bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-xs flex items-center gap-2">
+                          <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-400" />
+                          <span>{successMessage}</span>
                         </div>
                       )}
-
-                      {/* Toggle Backup Code Mode */}
-                      <div className="text-center">
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setUseBackupCode(!useBackupCode);
-                            setErrorMessage("");
-                          }}
-                          className="text-xs text-muted-foreground hover:text-white underline transition-colors"
-                        >
-                          {useBackupCode ? "Use Authenticator App OTP Code" : "Lost access? Use emergency backup code"}
-                        </button>
-                      </div>
 
                       {/* Error Display */}
                       {errorMessage && (
@@ -609,12 +566,12 @@ function AdminPage() {
                           {isLoading ? (
                             <>
                               <RefreshCw className="w-4 h-4 animate-spin" />
-                              Authenticating...
+                              Verifying Code...
                             </>
                           ) : (
                             <>
                               <ShieldCheck className="w-4 h-4" />
-                              Verify & Access Admin Panel
+                              Verify & Enter Admin Panel
                             </>
                           )}
                         </button>
@@ -624,10 +581,11 @@ function AdminPage() {
                           onClick={() => {
                             setAuthStage("password");
                             setErrorMessage("");
+                            setSuccessMessage("");
                           }}
                           className="w-full py-2.5 rounded-xl font-medium text-xs text-muted-foreground hover:text-white transition-colors"
                         >
-                          &larr; Back to Password Step
+                          &larr; Back to Login
                         </button>
                       </div>
                     </form>
@@ -719,47 +677,21 @@ function AdminPage() {
             </div>
           </header>
 
-          {/* Mobile Navigation Tabs */}
-          <div className="md:hidden flex items-center gap-1 px-4 py-2 bg-surface/40 border-b border-white/10 overflow-x-auto">
-            {[
-              { id: "overview", label: "Overview", icon: Users },
-              { id: "vehicles", label: "Vehicles", icon: Car },
-              { id: "leads", label: "Inquiries", icon: FileText },
-              { id: "security", label: "Security & 2FA", icon: ShieldCheck },
-            ].map((tab) => {
-              const Icon = tab.icon;
-              const active = activeTab === tab.id;
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id as any)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-medium shrink-0 flex items-center gap-1.5 transition-all ${
-                    active ? "bg-primary text-white" : "text-muted-foreground hover:text-white"
-                  }`}
-                >
-                  <Icon className="w-3.5 h-3.5" />
-                  {tab.label}
-                </button>
-              );
-            })}
-          </div>
-
           {/* Dashboard Main Content */}
           <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-8 space-y-8">
             {/* TAB 1: OVERVIEW */}
             {activeTab === "overview" && (
               <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-8">
-                {/* Welcome & Stats Row */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   <div>
                     <h1 className="text-2xl font-bold font-display text-white">System Dashboard</h1>
                     <p className="text-sm text-muted-foreground">
-                      Welcome back, <span className="text-white font-mono font-medium">Administrator</span>. Overview of fleet activity and security.
+                      Welcome back, <span className="text-white font-mono font-medium">ser_admin_cars</span>. Gmail 2FA authentication verified.
                     </p>
                   </div>
                   <div className="flex items-center gap-2 text-xs font-mono">
                     <span className="px-2.5 py-1 rounded-md bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center gap-1.5">
-                      <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" /> Live Server Online
+                      <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" /> Gmail SMTP Service Online
                     </span>
                   </div>
                 </div>
@@ -772,8 +704,8 @@ function AdminPage() {
                       <Car className="w-4 h-4 text-primary" />
                     </div>
                     <div className="text-3xl font-extrabold font-display text-white">{vehicles.length}</div>
-                    <div className="text-[11px] text-emerald-400 flex items-center gap-1">
-                      <span>+2 added this week</span>
+                    <div className="text-[11px] text-emerald-400">
+                      <span>Showcase items active</span>
                     </div>
                   </div>
 
@@ -799,11 +731,11 @@ function AdminPage() {
 
                   <div className="glass-strong rounded-xl p-5 border border-white/10 space-y-2">
                     <div className="flex items-center justify-between text-muted-foreground text-xs font-mono">
-                      <span>2FA PROTECTION</span>
+                      <span>GMAIL 2FA PROTECTED</span>
                       <ShieldCheck className="w-4 h-4 text-emerald-400" />
                     </div>
-                    <div className="text-3xl font-extrabold font-display text-emerald-400">ENFORCED</div>
-                    <div className="text-[11px] text-emerald-400/80">TOTP Authenticator active</div>
+                    <div className="text-3xl font-extrabold font-display text-emerald-400">ACTIVE</div>
+                    <div className="text-[11px] text-emerald-400/80">whatdoesthejimsay.jj@gmail.com</div>
                   </div>
                 </div>
 
@@ -873,102 +805,54 @@ function AdminPage() {
                   </button>
                 </div>
 
-                {/* Filters & Search */}
-                <div className="flex flex-col sm:flex-row items-center gap-3">
-                  <div className="relative w-full sm:w-72">
-                    <Search className="w-4 h-4 text-muted-foreground absolute left-3 top-1/2 -translate-y-1/2" />
-                    <input
-                      type="text"
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      placeholder="Search by name or ID..."
-                      className="w-full pl-9 pr-4 py-2 bg-black/40 border border-white/10 rounded-xl text-xs text-white placeholder-white/40 focus:outline-none focus:border-primary"
-                    />
-                  </div>
-
-                  <div className="flex items-center gap-1 overflow-x-auto w-full sm:w-auto">
-                    {[
-                      { id: "all", label: "All Categories" },
-                      { id: "passenger", label: "Passenger" },
-                      { id: "commercial", label: "Commercial" },
-                      { id: "truck", label: "Trucks" },
-                      { id: "machinery", label: "Machinery" },
-                    ].map((cat) => (
-                      <button
-                        key={cat.id}
-                        onClick={() => setCategoryFilter(cat.id)}
-                        className={`px-3 py-1.5 rounded-lg text-xs font-medium shrink-0 transition-colors ${
-                          categoryFilter === cat.id ? "bg-white/15 text-white border border-white/20" : "text-muted-foreground hover:text-white"
-                        }`}
-                      >
-                        {cat.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Table */}
                 <div className="glass-strong rounded-2xl border border-white/10 overflow-hidden">
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-left text-xs">
-                      <thead className="bg-black/50 border-b border-white/10 font-mono text-muted-foreground uppercase text-[11px]">
-                        <tr>
-                          <th className="p-4">Vehicle</th>
-                          <th className="p-4">Category</th>
-                          <th className="p-4">Year</th>
-                          <th className="p-4">Price</th>
-                          <th className="p-4">Status</th>
-                          <th className="p-4 text-right">Actions</th>
+                  <table className="w-full text-left text-xs">
+                    <thead className="bg-black/50 border-b border-white/10 font-mono text-muted-foreground uppercase text-[11px]">
+                      <tr>
+                        <th className="p-4">Vehicle</th>
+                        <th className="p-4">Category</th>
+                        <th className="p-4">Year</th>
+                        <th className="p-4">Price</th>
+                        <th className="p-4">Status</th>
+                        <th className="p-4 text-right">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-white/5 font-medium">
+                      {filteredVehicles.map((v) => (
+                        <tr key={v.id} className="hover:bg-white/5 transition-colors">
+                          <td className="p-4">
+                            <div className="font-semibold text-white text-sm">{v.name}</div>
+                            <div className="text-[11px] text-muted-foreground font-mono">{v.id}</div>
+                          </td>
+                          <td className="p-4 capitalize text-muted-foreground font-mono">{v.category}</td>
+                          <td className="p-4 font-mono text-white">{v.year}</td>
+                          <td className="p-4 font-bold font-mono text-white">{v.price}</td>
+                          <td className="p-4">
+                            <button
+                              onClick={() => handleToggleVehicleStatus(v.id)}
+                              className={`px-2.5 py-1 rounded text-[10px] font-mono uppercase font-bold ${
+                                v.status === "active"
+                                  ? "bg-emerald-500/15 text-emerald-400 border border-emerald-500/30"
+                                  : v.status === "draft"
+                                  ? "bg-amber-500/15 text-amber-400 border border-amber-500/30"
+                                  : "bg-red-500/15 text-red-400 border border-red-500/30"
+                              }`}
+                            >
+                              {v.status}
+                            </button>
+                          </td>
+                          <td className="p-4 text-right">
+                            <button
+                              onClick={() => handleDeleteVehicle(v.id)}
+                              className="p-1.5 rounded-lg hover:bg-red-500/20 text-muted-foreground hover:text-red-400"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </td>
                         </tr>
-                      </thead>
-                      <tbody className="divide-y divide-white/5 font-medium">
-                        {filteredVehicles.map((v) => (
-                          <tr key={v.id} className="hover:bg-white/5 transition-colors">
-                            <td className="p-4">
-                              <div className="font-semibold text-white text-sm">{v.name}</div>
-                              <div className="text-[11px] text-muted-foreground font-mono">{v.id}</div>
-                            </td>
-                            <td className="p-4 capitalize text-muted-foreground font-mono">{v.category}</td>
-                            <td className="p-4 font-mono text-white">{v.year}</td>
-                            <td className="p-4 font-bold font-mono text-white">{v.price}</td>
-                            <td className="p-4">
-                              <button
-                                onClick={() => handleToggleVehicleStatus(v.id)}
-                                title="Click to cycle status"
-                                className={`px-2.5 py-1 rounded text-[10px] font-mono uppercase font-bold transition-transform active:scale-95 ${
-                                  v.status === "active"
-                                    ? "bg-emerald-500/15 text-emerald-400 border border-emerald-500/30"
-                                    : v.status === "draft"
-                                    ? "bg-amber-500/15 text-amber-400 border border-amber-500/30"
-                                    : "bg-red-500/15 text-red-400 border border-red-500/30"
-                                }`}
-                              >
-                                {v.status}
-                              </button>
-                            </td>
-                            <td className="p-4 text-right">
-                              <div className="flex items-center justify-end gap-2">
-                                <button
-                                  onClick={() => handleDeleteVehicle(v.id)}
-                                  className="p-1.5 rounded-lg hover:bg-red-500/20 text-muted-foreground hover:text-red-400 transition-colors"
-                                  title="Delete Vehicle"
-                                >
-                                  <Trash2 className="w-4 h-4" />
-                                </button>
-                              </div>
-                            </td>
-                          </tr>
-                        ))}
-                        {filteredVehicles.length === 0 && (
-                          <tr>
-                            <td colSpan={6} className="p-8 text-center text-muted-foreground">
-                              No vehicles found matching criteria.
-                            </td>
-                          </tr>
-                        )}
-                      </tbody>
-                    </table>
-                  </div>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
               </motion.div>
             )}
@@ -1003,15 +887,7 @@ function AdminPage() {
                           <td className="p-4 font-mono uppercase text-primary">{l.serviceType}</td>
                           <td className="p-4 font-mono text-white">{l.date}</td>
                           <td className="p-4">
-                            <span
-                              className={`px-2 py-0.5 rounded text-[10px] font-mono uppercase font-bold ${
-                                l.status === "completed"
-                                  ? "bg-emerald-500/15 text-emerald-400 border border-emerald-500/30"
-                                  : l.status === "confirmed"
-                                  ? "bg-blue-500/15 text-blue-400 border border-blue-500/30"
-                                  : "bg-amber-500/15 text-amber-400 border border-amber-500/30"
-                              }`}
-                            >
+                            <span className="px-2 py-0.5 rounded text-[10px] font-mono uppercase font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
                               {l.status}
                             </span>
                           </td>
@@ -1027,71 +903,36 @@ function AdminPage() {
             {activeTab === "security" && (
               <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-6 max-w-4xl">
                 <div>
-                  <h1 className="text-2xl font-bold font-display text-white">Security & 2FA Configuration</h1>
-                  <p className="text-sm text-muted-foreground">Manage multi-factor authentication, secret TOTP keys, and emergency backup codes.</p>
+                  <h1 className="text-2xl font-bold font-display text-white">Security & Gmail 2FA Settings</h1>
+                  <p className="text-sm text-muted-foreground">Admin credentials & Gmail 2FA configuration.</p>
                 </div>
 
-                {/* 2FA Status Card */}
                 <div className="glass-strong rounded-2xl p-6 border border-emerald-500/30 bg-emerald-500/5 space-y-4">
                   <div className="flex items-start justify-between">
                     <div className="flex items-center gap-3">
                       <div className="w-12 h-12 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 flex items-center justify-center shrink-0">
-                        <ShieldCheck className="w-6 h-6" />
+                        <Mail className="w-6 h-6" />
                       </div>
                       <div>
-                        <h2 className="text-base font-bold text-white">Two-Factor Authentication is ACTIVE</h2>
-                        <p className="text-xs text-muted-foreground">Your administrator account requires a 6-digit TOTP code on every login.</p>
+                        <h2 className="text-base font-bold text-white">Gmail 2FA Email Authentication Active</h2>
+                        <p className="text-xs text-muted-foreground">Verification codes are automatically generated and emailed to your Gmail inbox on login.</p>
                       </div>
                     </div>
                     <span className="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-mono font-bold">
-                      PROTECTED
+                      GMAIL SMTP ACTIVE
                     </span>
                   </div>
 
                   <div className="pt-4 border-t border-white/10 grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-mono">
                     <div className="bg-black/40 p-3 rounded-xl border border-white/10">
-                      <span className="text-muted-foreground block text-[11px] mb-1">TOTP SECRET KEY</span>
-                      <div className="flex items-center justify-between">
-                        <span className="text-amber-400 font-bold tracking-widest">{totpSecret}</span>
-                        <button
-                          onClick={() => handleCopy(totpSecret, "secret")}
-                          className="text-muted-foreground hover:text-white p-1"
-                          title="Copy Secret Key"
-                        >
-                          {copiedCode === "secret" ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
-                        </button>
-                      </div>
+                      <span className="text-muted-foreground block text-[11px] mb-1">CONFIGURED ADMIN USER</span>
+                      <span className="text-white font-bold">ser_admin_cars</span>
                     </div>
 
                     <div className="bg-black/40 p-3 rounded-xl border border-white/10">
-                      <span className="text-muted-foreground block text-[11px] mb-1">AUTHENTICATOR APP</span>
-                      <span className="text-white font-medium">Google Authenticator / Authy / 1Password</span>
+                      <span className="text-muted-foreground block text-[11px] mb-1">GMAIL RECIPIENT INBOX</span>
+                      <span className="text-amber-400 font-bold">whatdoesthejimsay.jj@gmail.com</span>
                     </div>
-                  </div>
-                </div>
-
-                {/* Backup Codes Section */}
-                <div className="glass-strong rounded-2xl p-6 border border-white/10 space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h2 className="text-base font-bold text-white">Emergency Backup Codes</h2>
-                      <p className="text-xs text-muted-foreground">Keep these single-use recovery codes safe in case you lose your phone or 2FA app.</p>
-                    </div>
-                    <button
-                      onClick={() => handleCopy(backupCodes.join("\n"), "all-codes")}
-                      className="glass px-3 py-1.5 rounded-lg text-xs font-mono text-white hover:bg-white/10 flex items-center gap-1.5"
-                    >
-                      {copiedCode === "all-codes" ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
-                      Copy All Codes
-                    </button>
-                  </div>
-
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 font-mono text-xs">
-                    {backupCodes.map((code, idx) => (
-                      <div key={idx} className="bg-black/50 p-2.5 rounded-lg border border-white/10 text-center text-amber-200/90 tracking-wider">
-                        {code}
-                      </div>
-                    ))}
                   </div>
                 </div>
               </motion.div>
@@ -1100,9 +941,7 @@ function AdminPage() {
         </div>
       )}
 
-      {/* ========================================================================= */}
-      {/* ADD VEHICLE MODAL                                                         */}
-      {/* ========================================================================= */}
+      {/* ADD VEHICLE MODAL */}
       {isAddModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
           <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="glass-strong rounded-2xl p-6 max-w-md w-full border border-white/20 shadow-2xl relative">
