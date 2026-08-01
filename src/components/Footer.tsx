@@ -1,4 +1,5 @@
 import { Phone, Mail, MapPin, Clock } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 import logo from "@/assets/serroukas-logo-white.png";
 import { useLang } from "@/lib/language";
 
@@ -56,8 +57,13 @@ export function Footer() {
         </div>
       </div>
 
-      <div className="border-t border-white/5 py-8 text-center text-sm font-medium text-muted-foreground">
-        © {new Date().getFullYear()} Serroukas Cars · Car · Van · Truck · Argos
+      <div className="border-t border-white/5 py-8 px-4 flex flex-col sm:flex-row items-center justify-between gap-4 max-w-7xl mx-auto text-sm font-medium text-muted-foreground">
+        <div>
+          © {new Date().getFullYear()} Serroukas Cars · Car · Van · Truck · Argos
+        </div>
+        <Link to="/admin" className="hover:text-white transition-colors flex items-center gap-1.5 text-xs font-mono">
+          <span>Admin Portal</span>
+        </Link>
       </div>
     </footer>
   );
