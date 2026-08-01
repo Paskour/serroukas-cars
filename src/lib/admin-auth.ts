@@ -1,16 +1,117 @@
-import { createServerFn } from "@tanstack/react-start";
+import { createServerFn, getGlobalStartContext } from "@tanstack/react-start";
 import nodemailer from "nodemailer";
 
-// In-memory challenge store for 2FA OTP verification codes (5 minute expiration)
+// ============================================================================
+// GLOBAL IP RATE LIMITER CONFIGURATION
+// ============================================================================
+interface IpRateLimitRecord {
+  passwordAttempts: number;
+  otpAttempts: number;
+  firstAttemptTime: number;
+  lockedUntil: number;
+}
+
+const ipRateLimits = new Map<string, IpRateLimitRecord>();
+
+const WINDOW_MS = 15 * 60 * 1000; // 15 minute sliding window
+const MAX_PASSWORD_ATTEMPTS = 5;   // Max 5 password attempts per IP per 15 mins
+const MAX_OTP_ATTEMPTS = 10;        // Max 10 2FA OTP attempts per IP per 15 mins
+
+// Clean up old rate-limiting records every 10 minutes
+setInterval(() => {
+  const now = Date.now();
+  for (const [ip, record] of ipRateLimits.entries()) {
+    if (now - record.firstAttemptTime > WINDOW_MS && record.lockedUntil < now) {
+      ipRateLimits.delete(ip);
+    }
+  }
+}, 600000);
+
+/**
+ * Extracts client IP from global Start context headers
+ */
+function getClientIp(): string {
+  try {
+    const ctx = getGlobalStartContext() as any;
+    if (ctx?.request?.headers) {
+      const headers = ctx.request.headers;
+      const cfIp = headers.get("cf-connecting-ip");
+      if (cfIp) return cfIp.trim();
+
+      const xForwardedFor = headers.get("x-forwarded-for");
+      if (xForwardedFor) return xForwardedFor.split(",")[0].trim();
+
+      const xRealIp = headers.get("x-real-ip");
+      if (xRealIp) return xRealIp.trim();
+    }
+  } catch {}
+  return "127.0.0.1";
+}
+
+/**
+ * Checks if the client IP is allowed or rate-limited
+ */
+function checkIpRateLimit(ip: string, type: "password" | "otp"): { allowed: boolean; retryAfterMins?: number; remainingAttempts?: number } {
+  const now = Date.now();
+  let record = ipRateLimits.get(ip);
+
+  if (!record) {
+    record = { passwordAttempts: 0, otpAttempts: 0, firstAttemptTime: now, lockedUntil: 0 };
+    ipRateLimits.set(ip, record);
+  }
+
+  // Reset window if 15 minutes have passed
+  if (now - record.firstAttemptTime > WINDOW_MS) {
+    record.passwordAttempts = 0;
+    record.otpAttempts = 0;
+    record.firstAttemptTime = now;
+    record.lockedUntil = 0;
+  }
+
+  // Check if IP is currently locked out
+  if (record.lockedUntil > now) {
+    const remainingMins = Math.ceil((record.lockedUntil - now) / 60000);
+    return { allowed: false, retryAfterMins: remainingMins };
+  }
+
+  const maxAttempts = type === "password" ? MAX_PASSWORD_ATTEMPTS : MAX_OTP_ATTEMPTS;
+  const currentAttempts = type === "password" ? record.passwordAttempts : record.otpAttempts;
+
+  if (currentAttempts >= maxAttempts) {
+    record.lockedUntil = now + WINDOW_MS;
+    const remainingMins = Math.ceil(WINDOW_MS / 60000);
+    return { allowed: false, retryAfterMins: remainingMins };
+  }
+
+  return {
+    allowed: true,
+    remainingAttempts: maxAttempts - currentAttempts,
+  };
+}
+
+/**
+ * Increments failed attempts for an IP
+ */
+function recordIpFailure(ip: string, type: "password" | "otp") {
+  const record = ipRateLimits.get(ip);
+  if (record) {
+    if (type === "password") record.passwordAttempts += 1;
+    if (type === "otp") record.otpAttempts += 1;
+  }
+}
+
+// ============================================================================
+// 2FA CHALLENGE STORE & CLEANUP
+// ============================================================================
 interface ChallengeRecord {
   code: string;
   expiresAt: number;
   attempts: number;
+  ip: string;
 }
 
 const activeChallenges = new Map<string, ChallengeRecord>();
 
-// Clean up expired challenges periodically
 setInterval(() => {
   const now = Date.now();
   for (const [id, record] of activeChallenges.entries()) {
@@ -34,45 +135,55 @@ export interface Admin2FAPayload {
  * Helper to create nodemailer transporter for Gmail
  */
 function createGmailTransporter(user: string, pass: string, port = 465) {
-  // Strip spaces from App Password if any (e.g. "sfuw shtb dcah ttti" -> "sfuwshtbdcahttti")
   const cleanPass = pass.replace(/\s+/g, "");
-
   return nodemailer.createTransport({
     host: "smtp.gmail.com",
     port: port,
-    secure: port === 465, // true for 465, false for 587
+    secure: port === 465,
     auth: {
       user: user.trim(),
       pass: cleanPass,
     },
-    connectionTimeout: 10000, // 10 seconds
+    connectionTimeout: 10000,
     greetingTimeout: 10000,
   });
 }
 
 /**
- * Step 1: Validates admin credentials and sends 6-digit 2FA OTP via Gmail SMTP
+ * Step 1: Validates admin credentials with IP Rate Limiting & Gmail 2FA
  */
 export const verifyAdminPasswordFn = createServerFn({ method: "POST" })
   .validator((data: unknown) => data as AdminLoginPayload)
   .handler(async ({ data }) => {
+    const clientIp = getClientIp();
+    console.log(`[Admin Login Attempt] IP: ${clientIp}, Username: "${data.username || ""}"`);
+
+    // Enforce IP Rate Limiting
+    const limitCheck = checkIpRateLimit(clientIp, "password");
+    if (!limitCheck.allowed) {
+      console.warn(`[IP RATE LIMIT EXCEEDED] IP ${clientIp} is locked out.`);
+      return {
+        success: false,
+        error: `Too many failed login attempts from IP (${clientIp}). Access locked for ${limitCheck.retryAfterMins} minutes.`,
+      };
+    }
+
     const inputUsername = (data.username || "").trim();
     const inputPassword = data.password || "";
 
-    // Read env vars or fallbacks
     const envUser = process.env.ADMIN_USERNAME ? process.env.ADMIN_USERNAME.replace(/^["']|["']$/g, "").trim() : "";
     const envPass = process.env.ADMIN_PASSWORD ? process.env.ADMIN_PASSWORD.replace(/^["']|["']$/g, "").trim() : "";
 
     const expectedUsername = envUser || "ser_admin_cars";
     const expectedPassword = envPass || "password!A@WS#";
 
-    console.log(`[Admin Login Attempt] Username: "${inputUsername}"`);
-
     // Verify credentials
     if (inputUsername !== expectedUsername || inputPassword !== expectedPassword) {
+      recordIpFailure(clientIp, "password");
+      const remaining = (limitCheck.remainingAttempts ?? 5) - 1;
       return {
         success: false,
-        error: "Invalid username or password.",
+        error: `Invalid username or password. (${remaining} attempts remaining before IP lockout)`,
       };
     }
 
@@ -85,9 +196,9 @@ export const verifyAdminPasswordFn = createServerFn({ method: "POST" })
       code: otpCode,
       expiresAt: Date.now() + 5 * 60 * 1000,
       attempts: 0,
+      ip: clientIp,
     });
 
-    // Gmail SMTP credentials
     const rawSmtpUser = process.env.SMTP_USER || process.env.GMAIL_USER || "whatdoesthejimsay.jj@gmail.com";
     const rawSmtpPass = process.env.SMTP_PASS || process.env.GMAIL_APP_PASSWORD || "sfuw shtb dcah ttti";
     
@@ -95,10 +206,10 @@ export const verifyAdminPasswordFn = createServerFn({ method: "POST" })
     const smtpPass = rawSmtpPass.replace(/^["']|["']$/g, "").trim();
     const recipientEmail = (process.env.CONTACT_RECIPIENT_EMAIL || smtpUser).replace(/^["']|["']$/g, "").trim();
 
-    // ALWAYS PRINT IN SERVER CONSOLE FOR LOCAL DEV / DEBUGGING
     console.log(`\n======================================================`);
     console.log(`🔑 [SERROUKAS ADMIN 2FA CODE]: ${otpCode}`);
     console.log(`📩 Recipient Inbox: ${recipientEmail}`);
+    console.log(`🌐 Authorized Client IP: ${clientIp}`);
     console.log(`======================================================\n`);
 
     let emailSent = false;
@@ -117,7 +228,7 @@ export const verifyAdminPasswordFn = createServerFn({ method: "POST" })
           </div>
           <p style="font-size: 13px; color: #64748b; margin-top: 0;">
             This verification code will expire in <strong>5 minutes</strong>.<br />
-            If you did not request this login, please change your admin password immediately.
+            IP Address Requesting Access: <code>${clientIp}</code>
           </p>
           <hr style="border: 0; border-top: 1px solid #f1f5f9; margin: 24px 0;" />
           <p style="font-size: 11px; color: #94a3b8;">Serroukas Cars · Security Alert System</p>
@@ -125,7 +236,7 @@ export const verifyAdminPasswordFn = createServerFn({ method: "POST" })
       </div>
     `;
 
-    // Attempt 1: Port 465 (SSL)
+    // Attempt Port 465 then 587
     try {
       const transporter = createGmailTransporter(smtpUser, smtpPass, 465);
       await transporter.sendMail({
@@ -135,10 +246,7 @@ export const verifyAdminPasswordFn = createServerFn({ method: "POST" })
         html: htmlBody,
       });
       emailSent = true;
-      console.log(`[Admin 2FA Email] Successfully sent 2FA code to ${recipientEmail} via Port 465`);
     } catch (err1: any) {
-      console.warn(`[Port 465 Failed, trying Port 587]`, err1.message);
-      // Attempt 2: Port 587 (STARTTLS)
       try {
         const transporter587 = createGmailTransporter(smtpUser, smtpPass, 587);
         await transporter587.sendMail({
@@ -148,14 +256,12 @@ export const verifyAdminPasswordFn = createServerFn({ method: "POST" })
           html: htmlBody,
         });
         emailSent = true;
-        console.log(`[Admin 2FA Email] Successfully sent 2FA code to ${recipientEmail} via Port 587`);
       } catch (err2: any) {
         console.error("[Admin 2FA Email Error]", err2);
         emailError = err2.message || "Failed to connect to Gmail SMTP";
       }
     }
 
-    // Mask email for UI display (e.g. w***j@gmail.com)
     const maskedEmail = recipientEmail.replace(/^(.)(.*)(@.*)$/, (_, p1, p2, p3) => `${p1}***${p3}`);
 
     return {
@@ -165,17 +271,28 @@ export const verifyAdminPasswordFn = createServerFn({ method: "POST" })
       emailError,
       recipient: maskedEmail,
       rawEmail: recipientEmail,
+      clientIp,
     };
   });
 
 /**
- * Step 2: Validates the 6-digit 2FA OTP code
+ * Step 2: Validates the 6-digit 2FA OTP code with IP Rate Limiting
  */
 export const verifyAdmin2FAFn = createServerFn({ method: "POST" })
   .validator((data: unknown) => data as Admin2FAPayload)
   .handler(async ({ data }) => {
-    const { challengeId, code } = data;
+    const clientIp = getClientIp();
 
+    // Check IP rate limit for 2FA OTP attempts
+    const limitCheck = checkIpRateLimit(clientIp, "otp");
+    if (!limitCheck.allowed) {
+      return {
+        success: false,
+        error: `Too many failed 2FA attempts from IP (${clientIp}). Access locked for ${limitCheck.retryAfterMins} minutes.`,
+      };
+    }
+
+    const { challengeId, code } = data;
     const record = activeChallenges.get(challengeId);
 
     if (!record) {
@@ -195,6 +312,8 @@ export const verifyAdmin2FAFn = createServerFn({ method: "POST" })
 
     if (record.code !== code.trim()) {
       record.attempts += 1;
+      recordIpFailure(clientIp, "otp");
+
       if (record.attempts >= 5) {
         activeChallenges.delete(challengeId);
         return {
