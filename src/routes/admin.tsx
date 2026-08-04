@@ -26,6 +26,8 @@ import {
   GripVertical,
   UploadCloud,
   Image as ImageIcon,
+  Download,
+  Upload,
 } from "lucide-react";
 import logo from "@/assets/serroukas-logo-white.png";
 import { Vehicle, VehicleAttribute, getDefaultVehicleAttributes } from "@/lib/vehicles";
@@ -698,6 +700,57 @@ function AdminPage() {
     triggerNotification(`Removed brand "${brandName}".`);
   };
 
+  // Backup & Rollback Handlers
+  const backupFileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleExportBackup = () => {
+    const backupData = {
+      version: "1.0",
+      timestamp: new Date().toISOString(),
+      brands,
+      vehicles,
+    };
+    const jsonStr = JSON.stringify(backupData, null, 2);
+    const blob = new Blob([jsonStr], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `serroukas_cars_backup_${new Date().toISOString().slice(0, 10)}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    triggerNotification("Inventory backup downloaded successfully.");
+  };
+
+  const handleImportBackup = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      try {
+        const content = event.target?.result as string;
+        const parsed = JSON.parse(content);
+
+        if (Array.isArray(parsed.vehicles)) {
+          setVehicles(parsed.vehicles);
+          if (Array.isArray(parsed.brands)) {
+            parsed.brands.forEach((b: string) => addBrand(b));
+          }
+          triggerNotification(`Restored inventory backup (${parsed.vehicles.length} cars loaded).`);
+        } else if (Array.isArray(parsed)) {
+          setVehicles(parsed);
+          triggerNotification(`Restored inventory backup (${parsed.length} cars loaded).`);
+        } else {
+          triggerNotification("Invalid backup file format.");
+        }
+      } catch {
+        triggerNotification("Failed to parse backup JSON file.");
+      }
+    };
+    reader.readAsText(file);
+    e.target.value = "";
+  };
+
   // Add Vehicle handler
   const handleAddVehicleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -1208,7 +1261,31 @@ function AdminPage() {
                   <p className="text-sm text-muted-foreground mt-1">Manage car titles, brand categorizations, and vehicle specifications across the site.</p>
                 </div>
 
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2.5 flex-wrap">
+                  <button
+                    onClick={handleExportBackup}
+                    className="glass-strong hover:bg-white/10 text-xs px-4 py-3 rounded-xl font-semibold flex items-center gap-2 border border-white/10 text-emerald-400 transition-all font-mono shadow-md"
+                    title="Export 1-click JSON backup of all vehicles and brands"
+                  >
+                    <Download className="w-4 h-4" /> Export Backup
+                  </button>
+
+                  <button
+                    onClick={() => backupFileInputRef.current?.click()}
+                    className="glass-strong hover:bg-white/10 text-xs px-4 py-3 rounded-xl font-semibold flex items-center gap-2 border border-white/10 text-amber-400 transition-all font-mono shadow-md"
+                    title="Restore or roll back inventory from a JSON backup file"
+                  >
+                    <Upload className="w-4 h-4" /> Restore Backup
+                  </button>
+
+                  <input
+                    ref={backupFileInputRef}
+                    type="file"
+                    accept=".json"
+                    onChange={handleImportBackup}
+                    className="hidden"
+                  />
+
                   <button
                     onClick={() => setIsBrandModalOpen(true)}
                     className="glass-strong hover:bg-white/10 text-sm px-5 py-3 rounded-xl font-semibold flex items-center gap-2.5 border border-white/10 text-white transition-all font-mono shadow-md"
