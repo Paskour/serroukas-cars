@@ -3,11 +3,15 @@ import { Link, createFileRoute, notFound } from "@tanstack/react-router";
 import { ArrowLeft, CalendarDays, ChevronRight, ChevronLeft, Maximize2, X } from "lucide-react";
 import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
-import { vehicles } from "@/lib/vehicles";
+import { getStoredVehicles, useVehiclesStore } from "@/lib/store";
+import { useLang } from "@/lib/language";
+
+import { getDefaultVehicleAttributes } from "@/lib/vehicles";
 
 export const Route = createFileRoute("/vehicles/$vehicleId")({
   loader: ({ params }) => {
-    const vehicle = vehicles.find((item) => item.id === params.vehicleId);
+    const allVehicles = getStoredVehicles();
+    const vehicle = allVehicles.find((item) => item.id === params.vehicleId);
     if (!vehicle) throw notFound();
     return { vehicle };
   },
@@ -15,7 +19,10 @@ export const Route = createFileRoute("/vehicles/$vehicleId")({
 });
 
 function VehicleDetails() {
-  const { vehicle } = Route.useLoaderData();
+  const { tr } = useLang();
+  const { vehicle: initialVehicle } = Route.useLoaderData();
+  const [vehicles] = useVehiclesStore();
+  const vehicle = vehicles.find((v) => v.id === initialVehicle.id) || initialVehicle;
   const photos = vehicle.images?.length ? vehicle.images : [vehicle.image];
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
@@ -36,20 +43,7 @@ function VehicleDetails() {
     setLightboxOpen(true);
   };
 
-  const specs = [
-    ["Κωδικός", vehicle.code || vehicle.id],
-    ["Χιλιόμετρα", vehicle.km ? `${vehicle.km.toLocaleString("el-GR")} km` : null],
-    ["Κυβικά", vehicle.cc ? `${vehicle.cc.toLocaleString("el-GR")} cc` : null],
-    ["Χρονολογία", vehicle.year],
-    ["Ίπποι", vehicle.horsepower ? `${vehicle.horsepower} hp` : null],
-    ["Καύσιμο", vehicle.fuel],
-    ["Σασμάν", vehicle.transmission],
-    ["Κίνηση", vehicle.drive],
-    ["Πόρτες", vehicle.doors],
-    ["Καθίσματα", vehicle.seats],
-    ["Χρώμα εσωτερικό", vehicle.interiorColor],
-    ["Ρύποι", vehicle.emissions],
-  ].filter(([, value]) => value !== undefined && value !== null && value !== "" && value !== 0);
+  const specs = getDefaultVehicleAttributes(vehicle);
 
   return (
     <div className="min-h-dvh">
@@ -66,11 +60,11 @@ function VehicleDetails() {
 
           <div className="grid gap-10 lg:grid-cols-[minmax(0,1.45fr)_minmax(20rem,0.8fr)] lg:items-start">
             <section className="space-y-4">
-              <div className="group relative aspect-[4/3] overflow-hidden rounded-3xl glass-strong shadow-[var(--shadow-card)]">
+              <div className="group relative aspect-[4/3] overflow-hidden rounded-3xl glass-strong shadow-[var(--shadow-card)] bg-black/40">
                 <img
                   src={selectedPhoto}
                   alt={`${vehicle.brand} ${vehicle.model}`}
-                  className="h-full w-full object-cover transition-all duration-300 cursor-pointer"
+                  className="h-full w-full object-contain transition-all duration-300 cursor-pointer"
                   onClick={() => handleOpenLightbox(selectedPhotoIndex)}
                 />
 
@@ -116,13 +110,13 @@ function VehicleDetails() {
                         <button
                           key={photo + index}
                           onClick={() => handleOpenLightbox(3)}
-                          className="group relative aspect-[4/3] overflow-hidden rounded-2xl border-2 border-transparent transition hover:scale-[1.02] focus:outline-none"
+                          className="group relative aspect-[4/3] overflow-hidden rounded-2xl border-2 border-transparent transition hover:scale-[1.02] focus:outline-none bg-black/40"
                           title={`Δες όλες τις ${photos.length} φωτογραφίες`}
                         >
                           <img
                             src={photo}
                             alt={`${vehicle.brand} ${vehicle.model} +${remainingCount}`}
-                            className="h-full w-full object-cover brightness-50 group-hover:brightness-40 transition"
+                            className="h-full w-full object-contain brightness-50 group-hover:brightness-40 transition"
                           />
                           <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/40 text-white font-bold group-hover:bg-black/60 transition">
                             <span className="font-mono text-xl sm:text-2xl">+{remainingCount}</span>
@@ -136,7 +130,7 @@ function VehicleDetails() {
                       <button
                         key={photo + index}
                         onClick={() => setSelectedPhotoIndex(index)}
-                        className={`overflow-hidden rounded-2xl aspect-[4/3] border-2 transition ${
+                        className={`overflow-hidden rounded-2xl aspect-[4/3] border-2 transition bg-black/40 ${
                           isSelected
                             ? "border-primary scale-[1.02]"
                             : "border-transparent opacity-75 hover:opacity-100"
@@ -145,7 +139,7 @@ function VehicleDetails() {
                         <img
                           src={photo}
                           alt={`${vehicle.brand} ${vehicle.model} ${index + 1}`}
-                          className="h-full w-full object-cover"
+                          className="h-full w-full object-contain"
                         />
                       </button>
                     );
@@ -159,7 +153,7 @@ function VehicleDetails() {
               <h1 className="mt-2 font-display text-4xl leading-tight sm:text-5xl">{vehicle.model}</h1>
               <div className="mt-6 text-xs font-mono uppercase tracking-widest text-muted-foreground">Τιμή</div>
               <div className="mt-1 font-mono text-3xl sm:text-4xl font-bold text-gradient-red">
-                {vehicle.price > 0 ? `€ ${vehicle.price.toLocaleString("el-GR")}` : "Κατόπιν Επικοινωνίας"}
+                {vehicle.price > 0 ? `€ ${vehicle.price.toLocaleString("el-GR")}` : tr("priceOnRequest")}
               </div>
               <a
                 href={`/?vehicle=${vehicle.id}#book`}
@@ -174,10 +168,10 @@ function VehicleDetails() {
           <section className="mt-14 max-w-4xl">
             <h2 className="font-display text-4xl">Χαρακτηριστικά</h2>
             <div className="mt-6 grid overflow-hidden rounded-3xl border border-white/10 sm:grid-cols-2">
-              {specs.map(([label, value]) => (
-                <div key={String(label)} className="flex items-center justify-between gap-5 border-b border-white/10 px-5 py-4 last:border-b-0 sm:[&:nth-last-child(2):nth-child(odd)]:border-b-0 sm:[&:nth-child(odd)]:border-r">
-                  <span className="text-sm text-muted-foreground">{String(label)}</span>
-                  <span className="text-right text-sm font-semibold">{String(value)}</span>
+              {specs.map((attr, index) => (
+                <div key={index} className="flex items-center justify-between gap-5 border-b border-white/10 px-5 py-4 last:border-b-0 sm:[&:nth-last-child(2):nth-child(odd)]:border-b-0 sm:[&:nth-child(odd)]:border-r">
+                  <span className="text-sm text-muted-foreground">{attr.name}</span>
+                  <span className="text-right text-sm font-semibold text-white">{attr.value}</span>
                 </div>
               ))}
             </div>

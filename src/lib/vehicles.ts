@@ -12,6 +12,11 @@ import volvoLogo from "@/assets/brands/volvo.svg";
 
 export type VehicleType = "passenger" | "commercial" | "truck" | "machine";
 
+export interface VehicleAttribute {
+  name: string;
+  value: string;
+}
+
 export interface Vehicle {
   id: string;
   brand: string;
@@ -24,7 +29,7 @@ export interface Vehicle {
   type: VehicleType;
   image: string;
   images?: string[];
-  badge?: string;
+  badge?: string | null;
   horsepower?: number;
   transmission?: string;
   drive?: string;
@@ -49,6 +54,32 @@ export interface Vehicle {
   url?: string;
   description?: string;
   features?: string[];
+  attributes?: VehicleAttribute[];
+}
+
+export function getDefaultVehicleAttributes(v: Vehicle): VehicleAttribute[] {
+  if (v.attributes && Array.isArray(v.attributes) && v.attributes.length > 0) {
+    return v.attributes;
+  }
+
+  const list: { name: string; value: string | number | undefined | null }[] = [
+    { name: "Κωδικός", value: v.code || v.id },
+    { name: "Χιλιόμετρα", value: v.km ? `${v.km.toLocaleString("el-GR")} km` : null },
+    { name: "Κυβικά", value: v.cc ? `${v.cc.toLocaleString("el-GR")} cc` : null },
+    { name: "Χρονολογία", value: v.year ? String(v.year) : null },
+    { name: "Ίπποι", value: v.horsepower ? `${v.horsepower} hp` : null },
+    { name: "Καύσιμο", value: v.fuel },
+    { name: "Σασμάν", value: v.transmission },
+    { name: "Κίνηση", value: v.drive },
+    { name: "Πόρτες", value: v.doors },
+    { name: "Καθίσματα", value: v.seats },
+    { name: "Χρώμα εσωτερικό", value: v.interiorColor },
+    { name: "Ρύποι", value: v.emissions },
+  ];
+
+  return list
+    .filter((item) => item.value !== undefined && item.value !== null && item.value !== "" && item.value !== 0)
+    .map((item) => ({ name: item.name, value: String(item.value) }));
 }
 
 export const vehicles: Vehicle[] = [

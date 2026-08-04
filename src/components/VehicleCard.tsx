@@ -44,23 +44,20 @@ export function VehicleCard({ v }: { v: Vehicle }) {
         tabIndex={0}
         className="tilt-card group relative cursor-pointer overflow-hidden rounded-3xl glass-strong shadow-[var(--shadow-card)] focus:outline-none focus:ring-2 focus:ring-primary"
       >
-        <div className="relative aspect-[4/3] overflow-hidden">
+        <div className="relative aspect-[4/3] overflow-hidden bg-black/40">
           <img
             src={v.image}
             alt={`${v.brand} ${v.model}`}
             loading="lazy"
             decoding="async"
-            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+            className="h-full w-full object-contain transition-transform duration-700 group-hover:scale-105"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-transparent to-transparent pointer-events-none" />
           {v.badge && (
-            <span className="absolute top-3 left-3 rounded-full btn-hero px-3 py-1 text-[10px] font-mono tracking-widest">
+            <span className="absolute top-3 right-3 rounded-full btn-hero px-3.5 py-1.5 text-xs font-mono font-bold tracking-wider shadow-lg z-10 whitespace-nowrap">
               {v.badge}
             </span>
           )}
-          <div className="absolute bottom-3 right-3 glass rounded-full px-3 py-1 text-[10px] font-mono uppercase tracking-widest text-foreground/80">
-            {v.brand}
-          </div>
         </div>
 
         <div className="p-5">
@@ -91,7 +88,7 @@ export function VehicleCard({ v }: { v: Vehicle }) {
                 {tr("price")}
               </div>
               <div className="font-mono text-xl sm:text-2xl font-bold text-gradient-red">
-                {v.price > 0 ? `€ ${v.price.toLocaleString("el-GR")}` : "Κατόπιν Επικοινωνίας"}
+                {v.price > 0 ? `€ ${v.price.toLocaleString("el-GR")}` : tr("priceOnRequest")}
               </div>
             </div>
             <a

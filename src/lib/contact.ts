@@ -6,7 +6,7 @@ export interface ContactPayload {
   lastName: string;
   phone: string;
   email: string;
-  interest: "buy" | "rent" | "service";
+  interest: "buy";
   notes?: string;
   vehicleName?: string;
 }
@@ -48,7 +48,7 @@ export const submitAppointmentFn = createServerFn({ method: "POST" })
       messages: [] as string[],
     };
 
-    const interestLabel = interest === "buy" ? "Αγορά Οχήματος" : interest === "rent" ? "Ενοικίαση" : "Service & After-Sales";
+    const interestLabel = "Αγορά Οχήματος";
 
     const emailSubject = `[Νέο Αίτημα Serroukas Cars] ${interestLabel} - ${firstName} ${lastName}`;
     const emailHtml = `

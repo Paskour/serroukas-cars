@@ -10,7 +10,7 @@ interface FormData {
   lastName: string;
   phone: string;
   email: string;
-  interest: "buy" | "rent" | "service";
+  interest: "buy";
   notes: string;
 }
 
@@ -43,7 +43,7 @@ export function AppointmentForm() {
     }));
   }, []);
 
-  const steps = [tr("step1"), tr("step2"), tr("step3")];
+  const steps = [tr("step1"), tr("step3")];
 
   const set = (k: keyof FormData, v: string) => setData((d) => ({ ...d, [k]: v }));
 
@@ -72,7 +72,7 @@ export function AppointmentForm() {
 
   const canNext =
     step === 0
-      ? data.firstName && data.lastName && data.phone && data.email
+      ? Boolean(data.firstName && data.lastName && data.phone && data.email)
       : true;
 
   return (
@@ -95,8 +95,8 @@ export function AppointmentForm() {
         </motion.div>
 
         <div className="glass-strong rounded-3xl p-6 sm:p-10">
-          {/* Stepper */}
-          <div className="mb-8 flex items-center justify-between gap-2">
+          {/* Stepper (2 Steps) */}
+          <div className="mb-8 flex items-center justify-between gap-2 max-w-md mx-auto">
             {steps.map((s, i) => (
               <div key={i} className="flex-1 flex items-center gap-3 min-w-0">
                 <div
@@ -114,7 +114,7 @@ export function AppointmentForm() {
                   {s}
                 </div>
                 {i < steps.length - 1 && (
-                  <div className="hidden sm:block flex-1 h-px bg-white/10" />
+                  <div className="flex-1 h-px bg-white/10" />
                 )}
               </div>
             ))}
@@ -146,36 +146,16 @@ export function AppointmentForm() {
                 exit={{ opacity: 0, x: -20 }}
                 transition={{ duration: 0.25 }}
               >
+                {/* STEP 1: Details & Notes Combined */}
                 {step === 0 && (
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    <Field label={tr("firstName")} value={data.firstName} onChange={(v) => set("firstName", v)} />
-                    <Field label={tr("lastName")} value={data.lastName} onChange={(v) => set("lastName", v)} />
-                    <Field label={tr("phone")} value={data.phone} onChange={(v) => set("phone", v)} type="tel" />
-                    <Field label={tr("email")} value={data.email} onChange={(v) => set("email", v)} type="email" />
-                  </div>
-                )}
-                {step === 1 && (
-                  <div className="space-y-6">
-                    <div>
-                      <label className="text-xs font-mono uppercase tracking-widest text-muted-foreground">
-                        {tr("interestType")}
-                      </label>
-                      <div className="mt-3 grid gap-3 sm:grid-cols-3">
-                        {(["buy", "rent", "service"] as const).map((k) => (
-                          <button
-                            key={k}
-                            onClick={() => set("interest", k)}
-                            className={`rounded-2xl px-4 py-6 text-center transition font-semibold ${
-                              data.interest === k
-                                ? "btn-hero"
-                                : "glass hover:bg-white/5"
-                            }`}
-                          >
-                            {tr(k)}
-                          </button>
-                        ))}
-                      </div>
+                  <div className="space-y-5">
+                    <div className="grid gap-4 sm:grid-cols-2">
+                      <Field label={tr("firstName")} value={data.firstName} onChange={(v) => set("firstName", v)} />
+                      <Field label={tr("lastName")} value={data.lastName} onChange={(v) => set("lastName", v)} />
+                      <Field label={tr("phone")} value={data.phone} onChange={(v) => set("phone", v)} type="tel" />
+                      <Field label={tr("email")} value={data.email} onChange={(v) => set("email", v)} type="email" />
                     </div>
+
                     <div>
                       <label className="text-xs font-mono uppercase tracking-widest text-muted-foreground">
                         {tr("notes")}
@@ -183,20 +163,22 @@ export function AppointmentForm() {
                       <textarea
                         value={data.notes}
                         onChange={(e) => set("notes", e.target.value)}
-                        rows={4}
-                        className="mt-2 w-full glass rounded-2xl px-4 py-3 bg-transparent focus:outline-none focus:ring-2 focus:ring-primary"
+                        rows={3}
+                        placeholder={lang === "el" ? "Σημειώσεις ή απορίες για το όχημα..." : "Notes or questions about the vehicle..."}
+                        className="mt-2 w-full glass rounded-2xl px-4 py-3 bg-transparent focus:outline-none focus:ring-2 focus:ring-primary text-sm text-foreground placeholder:text-muted-foreground/50"
                       />
                     </div>
                   </div>
                 )}
-                {step === 2 && (
+
+                {/* STEP 2: Confirmation Summary */}
+                {step === 1 && (
                   <div className="space-y-3">
                     {[
                       [tr("firstName"), data.firstName],
                       [tr("lastName"), data.lastName],
                       [tr("phone"), data.phone],
                       [tr("email"), data.email],
-                      [tr("interestType"), tr(data.interest)],
                       [tr("notes"), data.notes || "—"],
                     ].map(([k, v]) => (
                       <div

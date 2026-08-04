@@ -2,8 +2,9 @@ import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, ChevronUp, Layers, Sparkles } from "lucide-react";
 import { VehicleCard } from "./VehicleCard";
-import { vehicles, brands, type VehicleType } from "@/lib/vehicles";
+import { type VehicleType } from "@/lib/vehicles";
 import { useLang } from "@/lib/language";
+import { useVehiclesStore, useBrandsStore } from "@/lib/store";
 
 const TYPES: { key: VehicleType | "all"; labelKey: any }[] = [
   { key: "all", labelKey: "all" },
@@ -18,6 +19,8 @@ const BATCH_INCREMENT = 6;
 
 export function VehiclesSection() {
   const { tr } = useLang();
+  const [vehicles] = useVehiclesStore();
+  const { brands: availableBrands } = useBrandsStore();
   const [type, setType] = useState<VehicleType | "all">("all");
   const [brand, setBrand] = useState<string>("all");
   const [visibleCount, setVisibleCount] = useState<number>(INITIAL_BATCH_SIZE);
@@ -27,9 +30,10 @@ export function VehiclesSection() {
     () =>
       vehicles.filter(
         (v) =>
-          (type === "all" || v.type === type) && (brand === "all" || v.brand === brand),
+          (type === "all" || v.type === type) &&
+          (brand === "all" || v.brand.toLowerCase() === brand.toLowerCase())
       ),
-    [type, brand],
+    [vehicles, type, brand]
   );
 
   // Reset section count when filters change to preserve initial fast load time
@@ -119,9 +123,9 @@ export function VehiclesSection() {
               <option value="all" className="bg-background">
                 {tr("all")}
               </option>
-              {brands.map((b) => (
-                <option key={b.name} value={b.name} className="bg-background">
-                  {b.name}
+              {availableBrands.map((b) => (
+                <option key={b} value={b} className="bg-background">
+                  {b}
                 </option>
               ))}
             </select>

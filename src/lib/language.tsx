@@ -95,6 +95,7 @@ export const t: Dict = {
   fuel: { el: "Καύσιμο", en: "Fuel" },
   cc: { el: "Κυβικά", en: "cc" },
   price: { el: "Τιμή", en: "Price" },
+  priceOnRequest: { el: "Κατόπιν Ραντεβού", en: "Upon Appointment" },
 };
 
 type Ctx = { lang: Lang; setLang: (l: Lang) => void; tr: (key: keyof typeof t) => string };

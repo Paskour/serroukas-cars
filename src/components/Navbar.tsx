@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { Search, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import logo from "@/assets/serroukas-logo-white.png";
 import { useLang } from "@/lib/language";
 
@@ -58,13 +58,6 @@ export function Navbar() {
 
         {/* Larger Control Buttons */}
         <div className="flex items-center gap-3">
-          <button
-            aria-label="Search"
-            className="hidden sm:grid h-11 w-11 place-items-center rounded-full glass hover:bg-white/10 transition"
-          >
-            <Search className="h-5.5 w-5.5 text-foreground" />
-          </button>
-          
           <div className="glass rounded-full p-1 flex items-center text-sm font-display font-bold">
             {(["el", "en"] as const).map((l) => (
               <button
